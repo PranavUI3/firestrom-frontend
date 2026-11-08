@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis Results &amp; Trend Report | TerraTrend</title>
+  <meta name="description" content="Detailed scientific analysis results and statistical significance interpretation for Earth observation trends.">
+
+  <!-- Lucide & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/results.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <div class="tt-results-container">
+          <!-- Top Action Bar & Report Identification -->
+          <div class="tt-results-topbar">
+            <div class="tt-results-header-info">
+              <span class="tt-results-header-id" id="tt-results-id">REPORT ID: ANALYSIS-DEMO-01</span>
+              <h2 class="tt-results-header-title" id="tt-results-title">Surface Air Temperature Trend Analysis</h2>
+              <span style="font-size: 0.8rem; color: var(--text-muted);" id="tt-results-date">Generated: Today</span>
+            </div>
+
+            <div class="tt-results-actions">
+              <button class="tt-btn tt-btn-outline tt-btn-sm" id="tt-copy-link-btn" title="Copy shareable link">
+                <i data-lucide="share-2"></i>
+                <span>Share</span>
+              </button>
+              <button class="tt-btn tt-btn-outline tt-btn-sm" id="tt-print-report-btn" title="Print scientific report">
+                <i data-lucide="printer"></i>
+                <span>Print Report</span>
+              </button>
+              <button class="tt-btn tt-btn-primary tt-btn-sm" id="tt-export-csv-btn" title="Download observations and fitted values">
+                <i data-lucide="download"></i>
+                <span>Export CSV</span>
+              </button>
+              <a href="detective.html" class="tt-btn tt-btn-secondary tt-btn-sm">
+                <i data-lucide="rotate-ccw"></i>
+                <span>New Investigation</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- B. Trend Verdict & Directional Banner -->
+          <section class="tt-verdict-banner" id="tt-verdict-banner">
+            <div class="tt-verdict-left">
+              <div class="tt-verdict-icon" id="tt-verdict-icon-wrap">
+                <i data-lucide="trending-up" style="width: 30px; height: 30px;"></i>
+              </div>
+              <div class="tt-verdict-text">
+                <h2 id="tt-verdict-heading">Statistically Significant Increasing Trend</h2>
+                <p id="tt-verdict-summary-text">Amazon Rainforest Basin (2005 - 2023) &bull; Statistically Significant (p &lt; 0.05)</p>
+              </div>
+            </div>
+
+            <div class="tt-verdict-rate-badge">
+              <span class="tt-verdict-rate-label">Annual Rate of Change</span>
+              <div class="tt-verdict-rate-val" id="tt-verdict-rate-display">+0.038</div>
+              <span style="font-size: 0.75rem; color: var(--text-secondary);" id="tt-verdict-rate-unit">°C / year</span>
+            </div>
+          </section>
+
+          <!-- C. Main Time-Series Visualization (Chart.js) -->
+          <section class="tt-results-chart-card">
+            <div class="tt-card-header">
+              <div>
+                <h3 class="tt-card-title">
+                  <i data-lucide="line-chart"></i>
+                  <span>Empirical Observations &amp; Linear Trend Trajectory</span>
+                </h3>
+                <p class="tt-card-subtitle">Continuous multi-year temporal curve fitted with ordinary least squares and 95% confidence bands.</p>
+              </div>
+              <!-- Custom Legends Indicator Bar -->
+              <div class="tt-chart-legends-bar">
+                <div class="tt-chart-legend-item">
+                  <span class="tt-legend-marker obs"></span>
+                  <span>Observed Time Series</span>
+                </div>
+                <div class="tt-chart-legend-item">
+                  <span class="tt-legend-marker trend"></span>
+                  <span>Fitted Trend Line</span>
+                </div>
+                <div class="tt-chart-legend-item">
+                  <span class="tt-legend-marker conf"></span>
+                  <span>95% Confidence Band</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tt-results-canvas-box">
+              <canvas id="tt-results-chart-canvas"></canvas>
+            </div>
+          </section>
+
+          <!-- D. Statistical Results Scorecards -->
+          <section class="tt-stats-scorecard-grid">
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Trend Slope (β₁)</span>
+              <div class="tt-scorecard-val" id="tt-score-slope">+0.0345</div>
+              <span class="tt-scorecard-sub">Change per unit time index</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Decadal Rate of Change</span>
+              <div class="tt-scorecard-val" id="tt-score-annual-rate">+0.345 °C/dec</div>
+              <span class="tt-scorecard-sub">10-year cumulative shift</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">P-Value (Two-Tailed)</span>
+              <div class="tt-scorecard-val" id="tt-score-p-value">&lt; 0.001</div>
+              <span class="tt-scorecard-sub">Null hypothesis rejection threshold</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Goodness of Fit (R²)</span>
+              <div class="tt-scorecard-val" id="tt-score-r2">0.742</div>
+              <span class="tt-scorecard-sub">Variance explained by linear trend</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Mann-Kendall Monotonic</span>
+              <div class="tt-scorecard-val" id="tt-score-mann-kendall">τ = 0.620 (Z = 4.12)</div>
+              <span class="tt-scorecard-sub">Non-parametric rank test</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Significance Verdict</span>
+              <div class="tt-scorecard-val" id="tt-score-significance" style="color: var(--color-success);">Significant</div>
+              <span class="tt-scorecard-sub">p &lt; 0.05 threshold satisfied</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Observation Frequency</span>
+              <div class="tt-scorecard-val">Monthly Grids</div>
+              <span class="tt-scorecard-sub">Quality-controlled composites</span>
+            </div>
+
+            <div class="tt-scorecard-item">
+              <span class="tt-scorecard-label">Instrument Calibration</span>
+              <div class="tt-scorecard-val">NASA Cal/Val</div>
+              <span class="tt-scorecard-sub">Validated against surface networks</span>
+            </div>
+          </section>
+
+          <!-- E & F. Plain-Language & Environmental Interpretations -->
+          <div class="tt-interpretations-row">
+            <!-- F. The 4 Earth Science Questions -->
+            <div class="tt-interp-card">
+              <h3 class="tt-interp-title">
+                <i data-lucide="help-circle"></i>
+                <span>Environmental Interpretation</span>
+              </h3>
+              <p class="tt-text-muted" style="font-size: 0.85rem; margin-bottom: 1.25rem;">
+                Translating raw regression metrics into clear ecological understanding.
+              </p>
+
+              <div class="tt-four-questions-list">
+                <div class="tt-question-item">
+                  <div class="tt-question-q"><i data-lucide="compass"></i> 1. What is changing?</div>
+                  <div class="tt-question-a" id="tt-interp-what">
+                    The observed variable shows a measurable linear trajectory.
+                  </div>
+                </div>
+
+                <div class="tt-question-item">
+                  <div class="tt-question-q"><i data-lucide="map-pin"></i> 2. Where is it changing?</div>
+                  <div class="tt-question-a" id="tt-interp-where">
+                    Within the target geographical sector and boundary.
+                  </div>
+                </div>
+
+                <div class="tt-question-item">
+                  <div class="tt-question-q"><i data-lucide="gauge"></i> 3. How much is it changing?</div>
+                  <div class="tt-question-a" id="tt-interp-how-much">
+                    Changing at an estimated rate per year and per decade.
+                  </div>
+                </div>
+
+                <div class="tt-question-item">
+                  <div class="tt-question-q"><i data-lucide="shield-check"></i> 4. How confident is the result?</div>
+                  <div class="tt-question-a" id="tt-interp-how-confident">
+                    High statistical confidence with p-value below alpha = 0.05.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- E. Statistical Significance & Causation Caveat -->
+            <div class="tt-interp-card">
+              <h3 class="tt-interp-title">
+                <i data-lucide="book-open-check"></i>
+                <span>Significance &amp; Causation Guidance</span>
+              </h3>
+              <p class="tt-text-muted" style="font-size: 0.85rem; margin-bottom: 1.25rem;">
+                Scientific guidelines on interpreting p-values and observational correlations.
+              </p>
+
+              <div class="tt-significance-callout">
+                <h4>Understanding the p-value</h4>
+                <p>
+                  A statistically significant trend (p &lt; 0.05) indicates that the observed slope is highly unlikely to have occurred solely through random atmospheric noise or cyclical fluctuations.
+                </p>
+              </div>
+
+              <div class="tt-significance-callout">
+                <h4>Statistical Significance ≠ Causation</h4>
+                <p id="tt-interp-caveat">
+                  Establishing that an environmental variable is increasing or decreasing over a 20-year satellite record does not automatically demonstrate causality. Observational trends may be influenced by multiple interconnected Earth system feedbacks, land use conversions, or unmodeled atmospheric teleconnections.
+                </p>
+              </div>
+
+              <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                <a href="compare.html" class="tt-btn tt-btn-outline tt-btn-sm" style="flex: 1;">
+                  <i data-lucide="git-compare"></i>
+                  <span>Compare with Another Region</span>
+                </a>
+                <a href="global-map.html" class="tt-btn tt-btn-secondary tt-btn-sm" style="flex: 1;">
+                  <i data-lucide="globe"></i>
+                  <span>Locate on Global Map</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- H. Analysis Metadata Card -->
+          <section class="tt-metadata-card">
+            <div class="tt-metadata-grid">
+              <div class="tt-meta-col">
+                <h5>NASA Data Source</h5>
+                <p id="tt-meta-dataset">AIRS / Aqua (NASA JPL)</p>
+              </div>
+
+              <div class="tt-meta-col">
+                <h5>Statistical Method</h5>
+                <p id="tt-meta-method">Ordinary Least Squares &amp; Mann-Kendall</p>
+              </div>
+
+              <div class="tt-meta-col">
+                <h5>Observation Period</h5>
+                <p id="tt-meta-period">2005 - 2023 (19 years)</p>
+              </div>
+
+              <div class="tt-meta-col">
+                <h5>Total Gridded Samples</h5>
+                <p id="tt-meta-obs-count">228 monthly observations</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/results.js"></script>
+</body>
+</html>

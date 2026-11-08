@@ -1,0 +1,343 @@
+/* ==========================================================================
+   TerraTrend – Earth Systems Trend Detective
+   results.css - Scientific Analysis Results & Statistical Interpretations
+   ========================================================================== */
+
+.tt-results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Results Top Action Bar */
+.tt-results-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tt-results-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tt-results-header-id {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
+  text-transform: uppercase;
+}
+
+.tt-results-header-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.tt-results-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Verdict / Trend Status Banner */
+.tt-verdict-banner {
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.tt-verdict-banner.trend-increasing {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(16, 24, 39, 0.95) 100%);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.tt-verdict-banner.trend-decreasing {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(16, 24, 39, 0.95) 100%);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.tt-verdict-banner.trend-neutral {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 24, 39, 0.95) 100%);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+.tt-verdict-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.tt-verdict-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.trend-increasing .tt-verdict-icon { background: rgba(239, 68, 68, 0.2); color: var(--color-danger); }
+.trend-decreasing .tt-verdict-icon { background: rgba(56, 189, 248, 0.2); color: var(--accent-primary); }
+.trend-neutral .tt-verdict-icon { background: rgba(34, 197, 94, 0.2); color: var(--color-success); }
+
+.tt-verdict-text h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.tt-verdict-text p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.tt-verdict-rate-badge {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.tt-verdict-rate-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tt-verdict-rate-val {
+  font-size: 1.85rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.trend-increasing .tt-verdict-rate-val { color: var(--color-danger); }
+.trend-decreasing .tt-verdict-rate-val { color: var(--accent-primary); }
+.trend-neutral .tt-verdict-rate-val { color: var(--color-success); }
+
+/* Main Chart Card */
+.tt-results-chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+
+.tt-chart-legends-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+
+.tt-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.tt-legend-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.tt-legend-marker.obs {
+  background: rgba(56, 189, 248, 0.35);
+  border: 1px solid var(--accent-primary);
+}
+
+.tt-legend-marker.trend {
+  background: #F59E0B;
+  height: 3px;
+}
+
+.tt-legend-marker.conf {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px dashed rgba(56, 189, 248, 0.4);
+}
+
+.tt-results-canvas-box {
+  position: relative;
+  height: 420px;
+  width: 100%;
+}
+
+/* Statistical Metrics Grid */
+.tt-stats-scorecard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.tt-scorecard-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tt-scorecard-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.tt-scorecard-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.tt-scorecard-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Interpretations Two-Column Section */
+.tt-interpretations-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+
+.tt-interp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+}
+
+.tt-interp-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.tt-interp-title svg {
+  color: var(--accent-primary);
+}
+
+.tt-four-questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tt-question-item {
+  background: rgba(16, 24, 39, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.tt-question-q {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-secondary);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tt-question-a {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.tt-significance-callout {
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  background: rgba(16, 24, 39, 0.7);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1.25rem;
+}
+
+.tt-significance-callout h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.tt-significance-callout p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Metadata Bar */
+.tt-metadata-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.75rem;
+}
+
+.tt-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.tt-meta-col h5 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.tt-meta-col p {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Print Friendly Styles */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .tt-sidebar, .tt-topbar, .tt-results-actions, .tt-btn {
+    display: none !important;
+  }
+  .tt-main-wrapper {
+    margin-left: 0 !important;
+  }
+  .tt-card, .tt-results-chart-card, .tt-interp-card {
+    background: #FFFFFF !important;
+    border: 1px solid #CCC !important;
+    color: #000 !important;
+  }
+}

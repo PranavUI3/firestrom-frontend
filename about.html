@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About &amp; Scientific Methodology | TerraTrend – NASA Space Apps</title>
+  <meta name="description" content="Scientific background, NASA missions, and statistical methodology behind the TerraTrend Earth Systems Trend Detective.">
+
+  <!-- Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .tt-about-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .tt-method-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .tt-method-block h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .tt-method-block p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .tt-formula-card {
+      background: rgba(8, 13, 24, 0.75);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--accent-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .tt-toc-sticky {
+      position: sticky;
+      top: calc(var(--topbar-height) + 1.5rem);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+
+    .tt-toc-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .tt-toc-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .tt-toc-list a {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      transition: color var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tt-toc-list a:hover {
+      color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <!-- Page Title Header -->
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem;">
+            About TerraTrend &amp; Scientific Methodology
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            Understanding the physics, statistical tests, and NASA satellite observations powering our trend detective engine.
+          </p>
+        </div>
+
+        <div class="tt-about-grid">
+          <!-- Main Narrative Column -->
+          <div>
+            <!-- Section 1: About TerraTrend -->
+            <div class="tt-method-block" id="about-project">
+              <h3><i data-lucide="orbit" style="color: var(--accent-primary);"></i> 1. About TerraTrend</h3>
+              <p>
+                <strong>TerraTrend – Earth Systems Trend Detective</strong> is a modern scientific web application created for the NASA Space Apps Challenge. Its purpose is to help researchers, students, educators, and policy makers discover, visualize, and analyze environmental trends using open Earth science data collected by NASA satellites and numerical assimilation models.
+              </p>
+              <p>
+                Rather than presenting raw complex NetCDF/HDF5 data tiles that require specialized scientific software, TerraTrend provides an intuitive, interactive interface designed around five fundamental scientific questions:
+              </p>
+              <ul class="tt-bullet-list" style="margin-bottom: 1rem;">
+                <li><i data-lucide="check-circle-2"></i> <span><b>What</b> is changing in the Earth's environmental system?</span></li>
+                <li><i data-lucide="check-circle-2"></i> <span><b>Where</b> is it changing geographically?</span></li>
+                <li><i data-lucide="check-circle-2"></i> <span><b>How much</b> is it changing (rate per year / per decade)?</span></li>
+                <li><i data-lucide="check-circle-2"></i> <span><b>Is the observed trend statistically significant</b> or merely seasonal noise?</span></li>
+                <li><i data-lucide="check-circle-2"></i> <span><b>What environmental patterns</b> can be extracted from decades of historical telemetry?</span></li>
+              </ul>
+            </div>
+
+            <!-- Section 2: Problem & Objectives -->
+            <div class="tt-method-block" id="objectives">
+              <h3><i data-lucide="target" style="color: var(--accent-primary);"></i> 2. Problem Statement &amp; Project Objectives</h3>
+              <p>
+                Earth observation satellites generate hundreds of terabytes of data daily. However, extracting reliable climate trends from these records is complicated by sensor calibration changes, cloud cover gaps, powerful seasonal oscillations (like winter/summer cycles), and multi-year climate variability (such as the El Niño-Southern Oscillation).
+              </p>
+              <p>
+                Our core project objectives are:
+              </p>
+              <ol style="padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                <li style="margin-bottom: 0.5rem;"><b>Democratize Access:</b> Provide an accessible, no-code web platform for analyzing multi-decadal time series across any global coordinate.</li>
+                <li style="margin-bottom: 0.5rem;"><b>Statistical Rigor:</b> Pair parametric regression with non-parametric Mann-Kendall tests so users can distinguish true trends from random noise.</li>
+                <li style="margin-bottom: 0.5rem;"><b>Actionable Interpretation:</b> Translate mathematical p-values and confidence intervals into plain-language summaries with explicit causation caveats.</li>
+                <li style="margin-bottom: 0.5rem;"><b>Open Integration:</b> Provide a modular API service layer ready for Python and Node.js backend connectors.</li>
+              </ol>
+            </div>
+
+            <!-- Section 3: Statistical Methods -->
+            <div class="tt-method-block" id="methods">
+              <h3><i data-lucide="calculator" style="color: var(--accent-primary);"></i> 3. Statistical Methods Explained</h3>
+              <p>
+                To provide trustworthy evidence, TerraTrend applies established Earth science time-series analysis methods:
+              </p>
+
+              <!-- Method A: Linear Regression -->
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.35rem;">
+                  A. Ordinary Least Squares (OLS) Linear Regression
+                </h4>
+                <p>
+                  Linear regression is used to estimate the direction and constant rate of change of an environmental variable over time. It fits a straight line through the historical observation points by minimizing the sum of squared vertical residuals:
+                </p>
+                <div class="tt-formula-card">
+                  <span>Y(t) = β₀ + β₁ · t + ε(t)</span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);">Where β₁ is the trend slope, β₀ is the baseline intercept, and ε represents residual variability.</span>
+                </div>
+                <p>
+                  Interpretation of slope (β₁):
+                </p>
+                <ul class="tt-bullet-list" style="margin-bottom: 0.75rem;">
+                  <li><i data-lucide="arrow-up-right" style="color: var(--color-danger);"></i> <span><b>Positive slope (β₁ &gt; 0):</b> The environmental variable is increasing over time (e.g., surface temperature rise).</span></li>
+                  <li><i data-lucide="arrow-down-right" style="color: var(--accent-primary);"></i> <span><b>Negative slope (β₁ &lt; 0):</b> The environmental variable is decreasing over time (e.g., soil moisture depletion or canopy loss).</span></li>
+                  <li><i data-lucide="minus" style="color: var(--color-success);"></i> <span><b>Near-zero slope (β₁ ≈ 0):</b> Little or no linear change detected over the evaluated period.</span></li>
+                </ul>
+              </div>
+
+              <!-- Method B: Mann-Kendall Test -->
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.35rem;">
+                  B. Mann-Kendall Non-Parametric Monotonic Trend Test
+                </h4>
+                <p>
+                  Because environmental data often deviates from a normal distribution and can contain non-linear seasonal spikes or cloud-induced outliers, we apply the non-parametric Mann-Kendall test (recommended by the World Meteorological Organization).
+                </p>
+                <p>
+                  The test compares relative ranks of successive points without assuming linear linearity. The test statistic S is calculated as:
+                </p>
+                <div class="tt-formula-card">
+                  <span>S = Σ Σ sgn(Yⱼ - Yₖ) for all k &lt; j</span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);">A positive S indicates that later observations tend to be higher than earlier ones. Kendall's Tau (τ) normalizes this score between -1.0 and +1.0.</span>
+                </div>
+              </div>
+
+              <!-- Method C: P-values & T-test -->
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.35rem;">
+                  C. Student's T-Test &amp; Hypothesis Testing
+                </h4>
+                <p>
+                  We test the null hypothesis (H₀: "There is no trend over time, β₁ = 0") against the alternative hypothesis (H₁: "A real trend exists, β₁ ≠ 0").
+                </p>
+                <p>
+                  The t-statistic measures how many standard errors the estimated slope is away from zero:
+                </p>
+                <div class="tt-formula-card">
+                  <span>t = β₁ / SE(β₁)</span>
+                </div>
+                <p>
+                  <b>The P-Value:</b> Represents the probability of observing a trend slope at least as extreme as the calculated one if the true slope were zero. If the p-value is below the chosen significance threshold (typically <b>p &lt; 0.05</b>), the result is classified as <b>Statistically Significant</b>.
+                </p>
+              </div>
+
+              <!-- Method D: Confidence Intervals -->
+              <div>
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.35rem;">
+                  D. 95% Confidence Intervals
+                </h4>
+                <p>
+                  A trend estimate is never a single certain number—it carries statistical uncertainty. The 95% confidence interval provides a plausible range within which the true underlying rate of change lies with 95% certainty.
+                </p>
+              </div>
+            </div>
+
+            <!-- Section 4: Observation Duration -->
+            <div class="tt-method-block" id="duration">
+              <h3><i data-lucide="history" style="color: var(--accent-primary);"></i> 4. Why Longer Observation Periods Matter</h3>
+              <p>
+                Climate is formally defined as average weather patterns over an extended duration (traditionally 30 years). When analyzing a short observation period (e.g., 3 to 5 years), short-term cyclical events like El Niño, volcanic aerosol cooling, or solar minimums can create temporary upward or downward slopes that do not represent multi-decadal trends.
+              </p>
+              <p>
+                Extending satellite records to 20+ years (such as continuous observations from MODIS Terra/Aqua launched in 1999/2002) significantly shrinks the standard error, increases statistical power, and enables high-confidence trend detection.
+              </p>
+            </div>
+
+            <!-- Section 5: NASA Missions Reference -->
+            <div class="tt-method-block" id="missions">
+              <h3><i data-lucide="satellite" style="color: var(--accent-primary);"></i> 5. NASA Data Sources &amp; Missions</h3>
+              <p>
+                TerraTrend is designed around calibrated datasets from NASA's Earth Observing System (EOS):
+              </p>
+              <ul class="tt-bullet-list">
+                <li><i data-lucide="check"></i> <span><b>MODIS:</b> Moderate Resolution Imaging Spectroradiometer aboard Terra and Aqua satellites.</span></li>
+                <li><i data-lucide="check"></i> <span><b>AIRS:</b> Atmospheric Infrared Sounder aboard Aqua measuring 3D atmospheric temperature profiles.</span></li>
+                <li><i data-lucide="check"></i> <span><b>GPM:</b> Global Precipitation Measurement Core Observatory with Dual-frequency Precipitation Radar.</span></li>
+                <li><i data-lucide="check"></i> <span><b>OMI:</b> Ozone Monitoring Instrument aboard Aura tracking total column ozone.</span></li>
+                <li><i data-lucide="check"></i> <span><b>MERRA-2:</b> Modern-Era Retrospective analysis for Research and Applications using the NASA GEOS model.</span></li>
+                <li><i data-lucide="check"></i> <span><b>GLDAS:</b> Global Land Data Assimilation System combining satellite feeds with land surface models.</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right Column: Sticky Table of Contents & Quick Links -->
+          <div>
+            <div class="tt-toc-sticky">
+              <div class="tt-toc-title">Table of Contents</div>
+              <div class="tt-toc-list">
+                <a href="#about-project"><i data-lucide="chevron-right"></i> About TerraTrend</a>
+                <a href="#objectives"><i data-lucide="chevron-right"></i> Problem &amp; Objectives</a>
+                <a href="#methods"><i data-lucide="chevron-right"></i> Statistical Methods</a>
+                <a href="#duration"><i data-lucide="chevron-right"></i> Observation Length</a>
+                <a href="#missions"><i data-lucide="chevron-right"></i> NASA Data Sources</a>
+              </div>
+
+              <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.75rem;">
+                  Try In Detective
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                  Apply these mathematical tests to real Earth observation records in our workspace.
+                </p>
+                <a href="detective.html" class="tt-btn tt-btn-primary tt-btn-sm" style="width: 100%;">
+                  <i data-lucide="search-check"></i>
+                  <span>Launch Detective</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      TerraComponents.initSidebar();
+      TerraComponents.initHeader('About & Scientific Methodology', 'Learn how TerraTrend turns satellite telemetry into verified trend discoveries');
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

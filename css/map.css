@@ -1,0 +1,207 @@
+/* ==========================================================================
+   TerraTrend – Earth Systems Trend Detective
+   map.css - Global Environmental Trend Map & Geospatial Filters
+   ========================================================================== */
+
+.tt-map-page-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: calc(100vh - var(--topbar-height) - 4rem);
+  min-height: 700px;
+}
+
+/* Floating Filter Toolbar */
+.tt-map-controls-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tt-map-filters-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tt-map-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tt-map-filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.tt-map-select {
+  padding: 0.4rem 1.8rem 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  background-color: var(--bg-secondary);
+}
+
+/* Map Canvas Container */
+.tt-map-viewport {
+  flex: 1;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
+}
+
+#tt-leaflet-global-map {
+  width: 100%;
+  height: 100%;
+  background: #060911;
+}
+
+/* Custom Leaflet Dark Theme Overrides */
+.leaflet-container {
+  background-color: #070B14 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-tile {
+  filter: brightness(0.65) invert(1) contrast(1.5) hue-rotate(200deg) saturate(0.35);
+}
+
+/* Map Legend */
+.tt-map-legend-overlay {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(8, 13, 24, 0.92);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  z-index: 800;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(8px);
+}
+
+.tt-legend-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.tt-legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.tt-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.tt-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tt-legend-dot.red { background: #EF4444; box-shadow: 0 0 6px #EF4444; }
+.tt-legend-dot.blue { background: #38BDF8; box-shadow: 0 0 6px #38BDF8; }
+.tt-legend-dot.green { background: #22C55E; box-shadow: 0 0 6px #22C55E; }
+.tt-legend-dot.grey { background: #94A3B8; }
+
+/* Custom Leaflet Map Markers */
+.tt-custom-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.tt-custom-marker:hover {
+  transform: scale(1.4);
+}
+
+/* Custom Leaflet Popups */
+.leaflet-popup-content-wrapper {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--bg-card) !important;
+}
+
+.tt-map-popup-card {
+  padding: 1.25rem;
+  min-width: 260px;
+}
+
+.tt-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.tt-popup-region {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tt-popup-var {
+  font-size: 0.8rem;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tt-popup-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.65rem 0;
+  margin: 0.65rem 0;
+}
+
+.tt-popup-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tt-popup-cta {
+  width: 100%;
+  margin-top: 0.35rem;
+}

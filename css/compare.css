@@ -1,0 +1,178 @@
+/* ==========================================================================
+   TerraTrend – Earth Systems Trend Detective
+   compare.css - Dual Geographical Region Comparison Workspace
+   ========================================================================== */
+
+.tt-compare-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Compare Control Bar */
+.tt-compare-bar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+}
+
+.tt-compare-selectors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr 0.8fr auto;
+  gap: 1.25rem;
+  align-items: flex-end;
+}
+
+.tt-region-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.tt-tag-a { color: var(--accent-primary); }
+.tt-tag-b { color: var(--accent-secondary); }
+
+/* Quick Presets for Comparison */
+.tt-compare-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.tt-presets-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Side-by-side Comparison Headers */
+.tt-dual-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+
+.tt-region-card-summary {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tt-region-card-summary.region-a {
+  border-top: 3px solid var(--accent-primary);
+}
+
+.tt-region-card-summary.region-b {
+  border-top: 3px solid var(--accent-secondary);
+}
+
+.tt-reg-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.tt-reg-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.tt-reg-climate {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.tt-reg-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  background: rgba(16, 24, 39, 0.6);
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+}
+
+.tt-reg-metric h5 {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tt-reg-metric p {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+/* Charts Grid */
+.tt-compare-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+
+.tt-compare-chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.tt-compare-canvas-box {
+  position: relative;
+  height: 320px;
+  width: 100%;
+}
+
+/* Differential Analysis & Synthesis Summary */
+.tt-diff-analysis-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+}
+
+.tt-diff-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(16, 24, 39, 0.8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tt-diff-item h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tt-diff-item p {
+  font-size: 1.45rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.tt-diff-narrative {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}

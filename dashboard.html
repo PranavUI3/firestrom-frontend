@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earth Systems Overview Dashboard | TerraTrend</title>
+  <meta name="description" content="Scientific analytics overview of global Earth system trends from NASA satellite observations.">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lucide & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- TerraTrend Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar Navigation -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <!-- A. Welcome Banner -->
+        <section class="tt-dash-welcome">
+          <div class="tt-dash-welcome-text">
+            <h2>Earth Systems Overview</h2>
+            <p>Explore environmental observations and discover how our planet is changing across atmosphere, land, and ocean realms.</p>
+          </div>
+          <div class="tt-dash-welcome-actions">
+            <a href="variables.html" class="tt-btn tt-btn-outline tt-btn-sm">
+              <i data-lucide="layers"></i>
+              <span>Explore Variables</span>
+            </a>
+            <a href="detective.html" class="tt-btn tt-btn-primary tt-btn-sm">
+              <i data-lucide="search-check"></i>
+              <span>Launch Trend Detective</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- B. Statistical Overview Cards -->
+        <section class="tt-stats-grid">
+          <div class="tt-stat-card">
+            <span class="tt-sample-pill">Demo Metric</span>
+            <div class="tt-stat-info">
+              <span class="tt-stat-label">Variables Available</span>
+              <div class="tt-stat-value" id="tt-stat-vars-count">15</div>
+              <span class="tt-stat-subtext">Across 4 Earth subsystems</span>
+            </div>
+            <div class="tt-stat-icon-wrap">
+              <i data-lucide="layers"></i>
+            </div>
+          </div>
+
+          <div class="tt-stat-card">
+            <span class="tt-sample-pill">Demo Metric</span>
+            <div class="tt-stat-info">
+              <span class="tt-stat-label">Regions Analyzed</span>
+              <div class="tt-stat-value" id="tt-stat-regions-count">10</div>
+              <span class="tt-stat-subtext">Global climate hot spots</span>
+            </div>
+            <div class="tt-stat-icon-wrap green">
+              <i data-lucide="globe"></i>
+            </div>
+          </div>
+
+          <div class="tt-stat-card">
+            <span class="tt-sample-pill">Demo Metric</span>
+            <div class="tt-stat-info">
+              <span class="tt-stat-label">Significant Trends</span>
+              <div class="tt-stat-value" id="tt-stat-trends-count">19 / 25</div>
+              <span class="tt-stat-subtext"><span class="highlight">76%</span> passing p &lt; 0.05 test</span>
+            </div>
+            <div class="tt-stat-icon-wrap orange">
+              <i data-lucide="trending-up"></i>
+            </div>
+          </div>
+
+          <div class="tt-stat-card">
+            <span class="tt-sample-pill">Demo Metric</span>
+            <div class="tt-stat-info">
+              <span class="tt-stat-label">NASA Datasets</span>
+              <div class="tt-stat-value" id="tt-stat-datasets-count">6</div>
+              <span class="tt-stat-subtext">MODIS, GPM, AIRS, MERRA-2</span>
+            </div>
+            <div class="tt-stat-icon-wrap purple">
+              <i data-lucide="satellite"></i>
+            </div>
+          </div>
+        </section>
+
+        <!-- C. Main Global Environmental Trend Line Chart -->
+        <section class="tt-chart-main-card">
+          <div class="tt-card-header">
+            <div>
+              <h3 class="tt-card-title">
+                <i data-lucide="activity"></i>
+                <span>Global Planetary Temperature Trajectory</span>
+              </h3>
+              <p class="tt-card-subtitle">Continuous monthly tropospheric anomaly series synthesized from AIRS soundings and MERRA-2 reanalysis.</p>
+            </div>
+            <div class="tt-chart-controls">
+              <div class="tt-btn-group">
+                <button class="tt-btn-toggle active" data-chart-range="all">2000–2023</button>
+                <button class="tt-btn-toggle" data-chart-range="10y">Last 10Y</button>
+                <button class="tt-btn-toggle" data-chart-range="5y">Last 5Y</button>
+              </div>
+              <a href="detective.html?variable=air_temp" class="tt-btn tt-btn-outline tt-btn-sm">
+                <i data-lucide="search-check"></i>
+                <span>Deep Dive</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="tt-chart-canvas-container">
+            <canvas id="tt-dashboard-main-chart"></canvas>
+          </div>
+        </section>
+
+        <!-- D. Featured Environmental Variables Grid -->
+        <section style="margin-bottom: 2rem;">
+          <div class="tt-card-header">
+            <div>
+              <h3 class="tt-card-title">
+                <i data-lucide="layers"></i>
+                <span>Core Environmental Variables</span>
+              </h3>
+              <p class="tt-card-subtitle">Select any variable to inspect historical observations and run regression tests.</p>
+            </div>
+            <a href="variables.html" class="tt-btn tt-btn-outline tt-btn-sm">
+              <span>View All Variables &rarr;</span>
+            </a>
+          </div>
+
+          <div class="tt-dash-vars-grid" id="tt-dashboard-vars-container">
+            <!-- Injected via dashboard.js -->
+          </div>
+        </section>
+
+        <!-- E & F. Two-Column Row: Recent Discoveries & Geospatial Preview -->
+        <div class="tt-dash-two-col">
+          <!-- E. Recent Trend Discoveries Table -->
+          <div class="tt-card">
+            <div class="tt-card-header">
+              <div>
+                <h3 class="tt-card-title">
+                  <i data-lucide="radar"></i>
+                  <span>Recent Trend Discoveries</span>
+                </h3>
+                <p class="tt-card-subtitle">Statistically evaluated multi-decadal shifts across surveyed geographic zones.</p>
+              </div>
+              <span class="tt-badge badge-neutral">Sample Feeds</span>
+            </div>
+
+            <div class="tt-table-responsive">
+              <table class="tt-data-table">
+                <thead>
+                  <tr>
+                    <th>Variable</th>
+                    <th>Region</th>
+                    <th>Direction</th>
+                    <th>Rate / Dec</th>
+                    <th>Significance</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tt-discoveries-tbody">
+                  <!-- Injected via dashboard.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- F & G. Right Column: Global Map Preview & NASA Datasets -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- Map Preview -->
+            <div class="tt-card">
+              <div class="tt-card-header">
+                <div>
+                  <h3 class="tt-card-title">
+                    <i data-lucide="globe"></i>
+                    <span>Global Spatial Distribution</span>
+                  </h3>
+                  <p class="tt-card-subtitle">Color-coded indicators of warming, drying, and greening anomalies.</p>
+                </div>
+                <a href="global-map.html" class="tt-btn tt-btn-outline tt-btn-sm">
+                  <span>Full Map</span>
+                  <i data-lucide="arrow-up-right"></i>
+                </a>
+              </div>
+
+              <div class="tt-map-preview-box">
+                <div id="tt-dashboard-map-container"></div>
+                <div class="tt-map-preview-overlay">
+                  <a href="global-map.html" class="tt-btn tt-btn-primary tt-btn-sm">
+                    <i data-lucide="maximize-2"></i>
+                    <span>Explore Global Map</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recently Analyzed Datasets -->
+            <div class="tt-card">
+              <div class="tt-card-header">
+                <div>
+                  <h3 class="tt-card-title">
+                    <i data-lucide="satellite"></i>
+                    <span>NASA Ingestion Pipelines</span>
+                  </h3>
+                  <p class="tt-card-subtitle">Instrument missions feeding our statistical trend engine.</p>
+                </div>
+              </div>
+
+              <div class="tt-dash-datasets-list" id="tt-recent-datasets-list">
+                <!-- Injected via dashboard.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

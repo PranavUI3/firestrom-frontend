@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demonstrations Library | TerraTrend – NASA Space Apps</title>
+  <meta name="description" content="Explore curated Earth science investigations showcasing detected environmental trends from NASA satellite missions.">
+
+  <!-- Chart.js & Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .tt-demos-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <!-- Gallery Header -->
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.35rem;">
+            Educational Demonstrations Library
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            Explore verified case studies illustrating decadal environmental trends across polar, tropical, desert, and marine biomes. Each investigation is fully interactive and can be opened in the Trend Detective workspace.
+          </p>
+        </div>
+
+        <!-- Demonstration Cards Grid (Rendered via demonstrations.js) -->
+        <section class="tt-demos-gallery-grid" id="tt-demos-container">
+          <!-- Injected dynamically -->
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/demonstrations.js"></script>
+</body>
+</html>

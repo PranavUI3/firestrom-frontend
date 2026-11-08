@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trend Detective Workspace | TerraTrend – NASA Space Apps</title>
+  <meta name="description" content="Step-by-step environmental trend investigation workspace powered by NASA Earth observation data.">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/detective.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <div class="tt-detective-container">
+          <!-- Multi-Step Wizard Progress Bar -->
+          <nav class="tt-stepper-bar" aria-label="Investigation Steps">
+            <div class="tt-stepper-item active" id="tt-step-item-1">
+              <span class="tt-step-circle">1</span>
+              <div class="tt-stepper-label-box">
+                <span class="tt-stepper-num">Step 1</span>
+                <span class="tt-stepper-title">Variable</span>
+              </div>
+            </div>
+
+            <div class="tt-stepper-divider"></div>
+
+            <div class="tt-stepper-item active" id="tt-step-item-2">
+              <span class="tt-step-circle">2</span>
+              <div class="tt-stepper-label-box">
+                <span class="tt-stepper-num">Step 2</span>
+                <span class="tt-stepper-title">Location</span>
+              </div>
+            </div>
+
+            <div class="tt-stepper-divider"></div>
+
+            <div class="tt-stepper-item active" id="tt-step-item-3">
+              <span class="tt-step-circle">3</span>
+              <div class="tt-stepper-label-box">
+                <span class="tt-stepper-num">Step 3</span>
+                <span class="tt-stepper-title">Time Horizon</span>
+              </div>
+            </div>
+
+            <div class="tt-stepper-divider"></div>
+
+            <div class="tt-stepper-item active" id="tt-step-item-4">
+              <span class="tt-step-circle">4</span>
+              <div class="tt-stepper-label-box">
+                <span class="tt-stepper-num">Step 4</span>
+                <span class="tt-stepper-title">Data Source</span>
+              </div>
+            </div>
+
+            <div class="tt-stepper-divider"></div>
+
+            <div class="tt-stepper-item active" id="tt-step-item-5">
+              <span class="tt-step-circle">5</span>
+              <div class="tt-stepper-label-box">
+                <span class="tt-stepper-num">Step 5</span>
+                <span class="tt-stepper-title">Analysis Mode</span>
+              </div>
+            </div>
+          </nav>
+
+          <!-- Two-Column Workspace Layout -->
+          <div class="tt-detective-layout">
+            <!-- Left Workspace: Step-by-Step Forms -->
+            <div class="tt-detective-forms-column">
+              <!-- STEP 1: SELECT VARIABLE -->
+              <div class="tt-step-panel" id="step-panel-1">
+                <div class="tt-step-header">
+                  <div class="tt-step-icon-badge">
+                    <i data-lucide="layers"></i>
+                  </div>
+                  <div class="tt-step-header-text">
+                    <h3>Step 1: Select Environmental Variable</h3>
+                    <p>Choose the Earth observation parameter to evaluate for monotonic or decadal trends.</p>
+                  </div>
+                </div>
+
+                <div class="tt-form-group">
+                  <label for="tt-det-variable-select">Environmental Variable:</label>
+                  <select id="tt-det-variable-select" class="tt-select">
+                    <!-- Populated dynamically via detective.js -->
+                  </select>
+                </div>
+
+                <!-- Dynamic Variable Preview Details -->
+                <div class="tt-var-selection-preview" id="tt-var-preview-box">
+                  <div class="tt-var-preview-icon">
+                    <i data-lucide="activity"></i>
+                  </div>
+                  <div class="tt-var-preview-body">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                      <h4 id="tt-var-preview-name">Surface Air Temperature</h4>
+                      <span class="tt-category-pill pill-atmosphere" id="tt-var-preview-category">Atmosphere</span>
+                    </div>
+                    <p id="tt-var-preview-desc">Near-surface air temperature measured at 2 meters above ground.</p>
+                    <div class="tt-var-preview-meta">
+                      <span>Scientific Unit: <strong id="tt-var-preview-unit">°C (Celsius)</strong></span>
+                      <span>Primary Sensor: <strong id="tt-var-preview-dataset">AIRS / MERRA-2</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 2: SELECT LOCATION -->
+              <div class="tt-step-panel" id="step-panel-2">
+                <div class="tt-step-header">
+                  <div class="tt-step-icon-badge">
+                    <i data-lucide="map-pin"></i>
+                  </div>
+                  <div class="tt-step-header-text">
+                    <h3>Step 2: Select Geographical Location</h3>
+                    <p>Pick a climate benchmark region or click anywhere on the world map to drop a coordinate pin.</p>
+                  </div>
+                </div>
+
+                <!-- Preset Quick Buttons -->
+                <div style="margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">
+                  Quick Hotspot Presets:
+                </div>
+                <div class="tt-region-presets-bar">
+                  <button type="button" class="tt-preset-pill active" data-region-id="amazon">Amazon Rainforest</button>
+                  <button type="button" class="tt-preset-pill" data-region-id="sahara">Sahara Desert</button>
+                  <button type="button" class="tt-preset-pill" data-region-id="india">Indian Subcontinent</button>
+                  <button type="button" class="tt-preset-pill" data-region-id="arctic">Arctic Region</button>
+                  <button type="button" class="tt-preset-pill" data-region-id="pacific_enso">Pacific Ocean (ENSO)</button>
+                  <button type="button" class="tt-preset-pill" data-region-id="sahel">Sahel Zone</button>
+                  <button type="button" class="tt-preset-pill" data-region-id="great_plains">US Great Plains</button>
+                </div>
+
+                <!-- Interactive Leaflet Map Box -->
+                <div class="tt-detective-map-box">
+                  <div id="tt-detective-leaflet-map"></div>
+                  <div class="tt-map-hint">
+                    <i data-lucide="crosshair" style="width: 12px; height: 12px; display: inline-block; vertical-align: -1px;"></i>
+                    Click or drag marker to reposition
+                  </div>
+                </div>
+
+                <div class="tt-form-group" style="margin-top: 1rem;">
+                  <label for="tt-det-region-select">Region / Study Area:</label>
+                  <select id="tt-det-region-select" class="tt-select">
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+
+                <div class="tt-coords-row">
+                  <div class="tt-form-group">
+                    <label for="tt-det-country-input">Country / Jurisdiction:</label>
+                    <input type="text" id="tt-det-country-input" class="tt-input" value="Brazil / Regional Basin">
+                  </div>
+                  <div class="tt-form-group">
+                    <label for="tt-det-lat-input">Latitude (°N/S):</label>
+                    <input type="number" id="tt-det-lat-input" class="tt-input" step="0.0001" value="-3.4653">
+                  </div>
+                  <div class="tt-form-group">
+                    <label for="tt-det-lon-input">Longitude (°E/W):</label>
+                    <input type="number" id="tt-det-lon-input" class="tt-input" step="0.0001" value="-62.2159">
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 3: SELECT TIME PERIOD -->
+              <div class="tt-step-panel" id="step-panel-3">
+                <div class="tt-step-header">
+                  <div class="tt-step-icon-badge">
+                    <i data-lucide="calendar"></i>
+                  </div>
+                  <div class="tt-step-header-text">
+                    <h3>Step 3: Select Time Period &amp; Resolution</h3>
+                    <p>Specify the observation window to separate decadal climate trends from annual weather cycles.</p>
+                  </div>
+                </div>
+
+                <div class="tt-time-row">
+                  <div class="tt-form-group">
+                    <label for="tt-det-start-year">Start Year:</label>
+                    <select id="tt-det-start-year" class="tt-select">
+                      <!-- Populated via detective.js -->
+                    </select>
+                  </div>
+
+                  <div class="tt-form-group">
+                    <label for="tt-det-end-year">End Year:</label>
+                    <select id="tt-det-end-year" class="tt-select">
+                      <!-- Populated via detective.js -->
+                    </select>
+                  </div>
+
+                  <div class="tt-form-group">
+                    <label>Temporal Resolution:</label>
+                    <div class="tt-resolution-selector">
+                      <button type="button" class="tt-res-option active" data-res="monthly">Monthly Grids</button>
+                      <button type="button" class="tt-res-option" data-res="daily">Daily Samples</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 4: SELECT DATA SOURCE -->
+              <div class="tt-step-panel" id="step-panel-4">
+                <div class="tt-step-header">
+                  <div class="tt-step-icon-badge">
+                    <i data-lucide="satellite"></i>
+                  </div>
+                  <div class="tt-step-header-text">
+                    <h3>Step 4: Select NASA Data Source</h3>
+                    <p>Select the underlying NASA satellite mission instrument or land-atmosphere model assimilation.</p>
+                  </div>
+                </div>
+
+                <div class="tt-source-selector-grid">
+                  <div class="tt-source-option active" data-source-id="MODIS">
+                    <span class="tt-source-badge-small">MODIS</span>
+                    <span class="tt-source-option-name">Terra &amp; Aqua Radiometer</span>
+                  </div>
+
+                  <div class="tt-source-option" data-source-id="GPM">
+                    <span class="tt-source-badge-small">GPM</span>
+                    <span class="tt-source-option-name">Global Precipitation Core</span>
+                  </div>
+
+                  <div class="tt-source-option" data-source-id="AIRS">
+                    <span class="tt-source-badge-small">AIRS</span>
+                    <span class="tt-source-option-name">Atmospheric Infrared Sounder</span>
+                  </div>
+
+                  <div class="tt-source-option" data-source-id="OMI">
+                    <span class="tt-source-badge-small">OMI</span>
+                    <span class="tt-source-option-name">Ozone Monitoring Instrument</span>
+                  </div>
+
+                  <div class="tt-source-option" data-source-id="MERRA-2">
+                    <span class="tt-source-badge-small">MERRA-2</span>
+                    <span class="tt-source-option-name">GEOS Model Reanalysis</span>
+                  </div>
+
+                  <div class="tt-source-option" data-source-id="GLDAS">
+                    <span class="tt-source-badge-small">GLDAS</span>
+                    <span class="tt-source-option-name">Land Data Assimilation</span>
+                  </div>
+                </div>
+
+                <div class="tt-selected-source-detail" id="tt-source-detail-text">
+                  MODIS (Terra &amp; Aqua) - High-radiometric sensitivity observing land surface, vegetation dynamics, and oceans every 1 to 2 days.
+                </div>
+              </div>
+
+              <!-- STEP 5: ANALYSIS SETTINGS -->
+              <div class="tt-step-panel" id="step-panel-5">
+                <div class="tt-step-header">
+                  <div class="tt-step-icon-badge">
+                    <i data-lucide="sliders"></i>
+                  </div>
+                  <div class="tt-step-header-text">
+                    <h3>Step 5: Statistical Analysis Settings</h3>
+                    <p>Configure parametric regression, non-parametric rank tests, and statistical significance thresholds.</p>
+                  </div>
+                </div>
+
+                <div class="tt-settings-grid">
+                  <label class="tt-setting-check-box">
+                    <input type="checkbox" id="tt-check-linear-reg" checked>
+                    <div class="tt-setting-info">
+                      <h4>Linear Regression (OLS)</h4>
+                      <p>Estimates slope, intercept, R², and annual/decadal rate of change.</p>
+                    </div>
+                  </label>
+
+                  <label class="tt-setting-check-box">
+                    <input type="checkbox" id="tt-check-mann-kendall" checked>
+                    <div class="tt-setting-info">
+                      <h4>Mann-Kendall Rank Test</h4>
+                      <p>Evaluates monotonic trends robust to seasonal outliers and non-normality.</p>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="tt-form-group" style="margin-top: 1rem;">
+                  <label for="tt-conf-level-select">Confidence Interval Threshold:</label>
+                  <select id="tt-conf-level-select" class="tt-select">
+                    <option value="0.95" selected>95% Confidence Level (p &lt; 0.05) [Standard Scientific]</option>
+                    <option value="0.99">99% Confidence Level (p &lt; 0.01) [High Stringency]</option>
+                    <option value="0.90">90% Confidence Level (p &lt; 0.10) [Exploratory / Screening]</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Sticky Summary & Action Trigger -->
+            <div class="tt-detective-sidebar">
+              <div class="tt-investigation-summary-card">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <h3>Investigation Setup</h3>
+                  <span class="tt-badge badge-primary">Configuration</span>
+                </div>
+                <p class="tt-text-muted" style="font-size: 0.8rem;">Review your selected study parameters before executing the analysis pipeline.</p>
+
+                <div class="tt-summary-items-list">
+                  <div class="tt-summary-row">
+                    <span class="tt-summary-label">Target Variable:</span>
+                    <span class="tt-summary-val" id="tt-sum-variable">Surface Air Temperature (°C)</span>
+                  </div>
+
+                  <div class="tt-summary-row">
+                    <span class="tt-summary-label">Target Location:</span>
+                    <span class="tt-summary-val" id="tt-sum-region">Amazon Rainforest Basin</span>
+                  </div>
+
+                  <div class="tt-summary-row">
+                    <span class="tt-summary-label">Time Horizon:</span>
+                    <span class="tt-summary-val" id="tt-sum-time">2005 - 2023 (MONTHLY)</span>
+                  </div>
+
+                  <div class="tt-summary-row">
+                    <span class="tt-summary-label">NASA Data Source:</span>
+                    <span class="tt-summary-val" id="tt-sum-source">MODIS</span>
+                  </div>
+
+                  <div class="tt-summary-row">
+                    <span class="tt-summary-label">Applied Methods:</span>
+                    <span class="tt-summary-val" id="tt-sum-method">OLS Regression + Mann-Kendall + 95% CI</span>
+                  </div>
+                </div>
+
+                <button type="button" class="tt-btn tt-btn-primary tt-analyze-cta-btn" id="tt-analyze-submit-btn">
+                  <i data-lucide="play"></i>
+                  <span>Analyze Environmental Trend</span>
+                </button>
+
+                <!-- Animated Loading & Progress State -->
+                <div class="tt-analysis-progress-overlay" id="tt-analysis-progress">
+                  <div class="tt-progress-spinner-box">
+                    <div class="tt-spinner-ring"></div>
+                  </div>
+                  <h4 class="tt-progress-title">Executing Trend Detective Pipeline</h4>
+                  <div class="tt-progress-track">
+                    <div class="tt-progress-fill" id="tt-progress-fill-bar"></div>
+                  </div>
+                  <div class="tt-progress-stage" id="tt-progress-stage-label">
+                    Initializing analytical pipeline...
+                  </div>
+                </div>
+
+                <div class="tt-alert tt-alert-info" style="margin-top: 1.25rem; margin-bottom: 0;">
+                  <i data-lucide="info"></i>
+                  <div style="font-size: 0.76rem;">
+                    <strong>Pipeline Notice:</strong> Running in client-side high-fidelity NASA synthetic mock mode. All regression and Mann-Kendall metrics are dynamically evaluated.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/detective.js"></script>
+</body>
+</html>

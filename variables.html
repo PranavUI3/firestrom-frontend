@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Environmental Variables | TerraTrend</title>
+  <meta name="description" content="Search and discover Earth system observation variables from NASA satellite missions.">
+
+  <!-- Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- TerraTrend Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .tt-filter-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.75rem;
+    }
+
+    .tt-filter-search-box {
+      flex: 1;
+      max-width: 420px;
+      position: relative;
+    }
+
+    .tt-filter-search-box input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.4rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .tt-filter-search-box input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: var(--accent-primary-glow);
+    }
+
+    .tt-filter-search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+    }
+
+    .tt-category-pills-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tt-category-filter-btn {
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all var(--transition-fast);
+    }
+
+    .tt-category-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+
+    .tt-category-filter-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .tt-variables-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <!-- Explorer Header Info -->
+        <div style="margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.35rem;">
+            Earth Observation Variable Catalogue
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            Search and filter physical, chemical, and biological Earth system variables captured by NASA satellites, models, and assimilation systems.
+          </p>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <section class="tt-filter-toolbar">
+          <!-- Search input -->
+          <div class="tt-filter-search-box">
+            <i data-lucide="search" class="tt-filter-search-icon"></i>
+            <input type="text" id="tt-var-search" placeholder="Search environmental variables, units, or missions...">
+          </div>
+
+          <!-- Category filter buttons -->
+          <div class="tt-category-pills-bar">
+            <button class="tt-category-filter-btn active" data-category="all">All Subsystems</button>
+            <button class="tt-category-filter-btn" data-category="atmosphere">Atmosphere</button>
+            <button class="tt-category-filter-btn" data-category="land">Land Surface</button>
+            <button class="tt-category-filter-btn" data-category="water">Water Cycle</button>
+            <button class="tt-category-filter-btn" data-category="ocean">Ocean</button>
+          </div>
+
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);" id="tt-vars-result-count">
+            Loading catalog...
+          </div>
+        </section>
+
+        <!-- Variables Grid (Injected dynamically) -->
+        <section class="tt-variables-catalog-grid" id="tt-variables-grid">
+          <!-- Cards rendered by variables.js -->
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/variables.js"></script>
+</body>
+</html>

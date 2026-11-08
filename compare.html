@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Regional Trends | TerraTrend – NASA Space Apps</title>
+  <meta name="description" content="Compare environmental trends between two distinct geographic biomes using NASA satellite observation records.">
+
+  <!-- Chart.js & Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/compare.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <div class="tt-compare-container">
+          <!-- Selection & Control Card -->
+          <div class="tt-compare-bar-card">
+            <div class="tt-compare-selectors-grid">
+              <!-- Region A -->
+              <div class="tt-form-group" style="margin-bottom: 0;">
+                <span class="tt-region-tag-pill tt-tag-a">
+                  <i data-lucide="circle-dot"></i> Region A
+                </span>
+                <select id="tt-comp-region-a" class="tt-select">
+                  <!-- Populated via compare.js -->
+                </select>
+              </div>
+
+              <!-- Region B -->
+              <div class="tt-form-group" style="margin-bottom: 0;">
+                <span class="tt-region-tag-pill tt-tag-b">
+                  <i data-lucide="circle-dot"></i> Region B
+                </span>
+                <select id="tt-comp-region-b" class="tt-select">
+                  <!-- Populated via compare.js -->
+                </select>
+              </div>
+
+              <!-- Variable -->
+              <div class="tt-form-group" style="margin-bottom: 0;">
+                <label for="tt-comp-variable" style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">
+                  Environmental Variable:
+                </label>
+                <select id="tt-comp-variable" class="tt-select">
+                  <!-- Populated via compare.js -->
+                </select>
+              </div>
+
+              <!-- Period -->
+              <div class="tt-form-group" style="margin-bottom: 0;">
+                <label for="tt-comp-period" style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">
+                  Time Period:
+                </label>
+                <select id="tt-comp-period" class="tt-select">
+                  <option value="2005-2023" selected>2005 - 2023 (19 Yrs)</option>
+                  <option value="2000-2023">2000 - 2023 (24 Yrs)</option>
+                  <option value="2010-2023">2010 - 2023 (14 Yrs)</option>
+                </select>
+              </div>
+
+              <!-- Compare Submit -->
+              <button class="tt-btn tt-btn-primary" id="tt-comp-run-btn" style="height: 42px;">
+                <i data-lucide="git-compare"></i>
+                <span>Run Comparison</span>
+              </button>
+            </div>
+
+            <!-- Quick Comparison Presets -->
+            <div class="tt-compare-presets-row">
+              <span class="tt-presets-title">Quick Comparisons:</span>
+              <button type="button" class="tt-preset-pill tt-comp-preset-pill" data-rega="amazon" data-regb="sahara" data-var="lst">
+                Amazon vs. Sahara (Skin Temp)
+              </button>
+              <button type="button" class="tt-preset-pill tt-comp-preset-pill" data-rega="arctic" data-regb="india" data-var="air_temp">
+                Arctic vs. India (Air Temp)
+              </button>
+              <button type="button" class="tt-preset-pill tt-comp-preset-pill" data-rega="sahel" data-regb="great_plains" data-var="soil_moisture">
+                Sahel vs. Great Plains (Soil Moisture)
+              </button>
+              <button type="button" class="tt-preset-pill tt-comp-preset-pill" data-rega="pacific_enso" data-regb="mediterranean" data-var="sst">
+                Pacific ENSO vs. Mediterranean (SST)
+              </button>
+            </div>
+          </div>
+
+          <!-- Dual Region Metric Cards -->
+          <div class="tt-dual-header-grid">
+            <!-- Card Region A -->
+            <div class="tt-region-card-summary region-a">
+              <div class="tt-reg-header-top">
+                <div>
+                  <span class="tt-region-tag-pill tt-tag-a">Focus Region A</span>
+                  <h3 class="tt-reg-name" id="tt-comp-name-a">Amazon Rainforest Basin</h3>
+                  <span class="tt-reg-climate" id="tt-comp-clim-a">Brazil &bull; Tropical Rainforest</span>
+                </div>
+                <span class="tt-badge badge-primary">Region A</span>
+              </div>
+
+              <div class="tt-reg-metrics-grid">
+                <div class="tt-reg-metric">
+                  <h5>Annual Rate</h5>
+                  <p id="tt-comp-rate-a">+0.038 / yr</p>
+                </div>
+                <div class="tt-reg-metric">
+                  <h5>Significance</h5>
+                  <p id="tt-comp-sig-a" style="color: var(--color-success); font-size: 0.95rem;">Significant</p>
+                </div>
+                <div class="tt-reg-metric">
+                  <h5>Dataset</h5>
+                  <p style="font-size: 0.95rem; color: var(--accent-primary);">MODIS</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Region B -->
+            <div class="tt-region-card-summary region-b">
+              <div class="tt-reg-header-top">
+                <div>
+                  <span class="tt-region-tag-pill tt-tag-b">Comparison Region B</span>
+                  <h3 class="tt-reg-name" id="tt-comp-name-b">Sahara Desert</h3>
+                  <span class="tt-reg-climate" id="tt-comp-clim-b">Algeria/Libya &bull; Arid Hot Desert</span>
+                </div>
+                <span class="tt-badge badge-warning">Region B</span>
+              </div>
+
+              <div class="tt-reg-metrics-grid">
+                <div class="tt-reg-metric">
+                  <h5>Annual Rate</h5>
+                  <p id="tt-comp-rate-b">+0.045 / yr</p>
+                </div>
+                <div class="tt-reg-metric">
+                  <h5>Significance</h5>
+                  <p id="tt-comp-sig-b" style="color: var(--color-success); font-size: 0.95rem;">Significant</p>
+                </div>
+                <div class="tt-reg-metric">
+                  <h5>Dataset</h5>
+                  <p style="font-size: 0.95rem; color: var(--accent-secondary);">MODIS</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dual Side-by-Side Charts Grid -->
+          <div class="tt-compare-charts-grid">
+            <div class="tt-compare-chart-card">
+              <div class="tt-card-header">
+                <h4 style="font-size: 1rem; font-weight: 700; color: var(--accent-primary);">
+                  Region A Trajectory
+                </h4>
+                <span class="tt-badge badge-neutral">Historical Monthly Observations</span>
+              </div>
+              <div class="tt-compare-canvas-box">
+                <canvas id="tt-comp-chart-a"></canvas>
+              </div>
+            </div>
+
+            <div class="tt-compare-chart-card">
+              <div class="tt-card-header">
+                <h4 style="font-size: 1rem; font-weight: 700; color: var(--accent-secondary);">
+                  Region B Trajectory
+                </h4>
+                <span class="tt-badge badge-neutral">Historical Monthly Observations</span>
+              </div>
+              <div class="tt-compare-canvas-box">
+                <canvas id="tt-comp-chart-b"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Differential Analysis & Synthesis Summary -->
+          <div class="tt-diff-analysis-card">
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="scale" style="color: var(--accent-primary);"></i>
+              <span>Differential Trend Synthesis &amp; Regional Divergence</span>
+            </h3>
+
+            <div class="tt-diff-banner">
+              <div class="tt-diff-item">
+                <h4>Rate Differential (Δ Slope):</h4>
+                <p id="tt-diff-slope">-0.007 / yr</p>
+              </div>
+
+              <div class="tt-diff-item">
+                <h4>Baseline Mean Differential:</h4>
+                <p id="tt-diff-mean">-17.0 °C</p>
+              </div>
+
+              <div class="tt-diff-item">
+                <h4>Sample Source:</h4>
+                <p style="font-size: 1rem; color: var(--text-muted);">NASA Earthdata Synthesis</p>
+              </div>
+            </div>
+
+            <div class="tt-diff-narrative" id="tt-diff-narrative-text">
+              <!-- Injected dynamically by compare.js -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/compare.js"></script>
+</body>
+</html>

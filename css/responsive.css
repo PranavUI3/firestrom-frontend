@@ -1,0 +1,205 @@
+/* ==========================================================================
+   TerraTrend – Earth Systems Trend Detective
+   responsive.css - Media Queries & Mobile Adaptation
+   ========================================================================== */
+
+/* Tablet & Smaller Desktops (<= 1200px) */
+@media screen and (max-width: 1200px) {
+  .tt-hero-title {
+    font-size: 2.85rem;
+  }
+
+  .tt-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tt-stats-scorecard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tt-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tt-featured-vars-grid,
+  .tt-demos-grid,
+  .tt-sources-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tt-detective-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-detective-sidebar {
+    position: static;
+  }
+
+  .tt-compare-charts-grid,
+  .tt-dual-header-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet Portrait & Large Phones (<= 992px) */
+@media screen and (max-width: 992px) {
+  .tt-main-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .tt-sidebar {
+    transform: translateX(-100%);
+    width: 280px !important;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .tt-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .tt-sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 95;
+  }
+
+  .tt-sidebar-backdrop.visible {
+    display: block;
+  }
+
+  .tt-mobile-menu-btn {
+    display: flex;
+  }
+
+  .tt-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .tt-hero-visual {
+    order: -1;
+  }
+
+  .tt-dash-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-interpretations-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .tt-compare-selectors-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile Devices (<= 768px) */
+@media screen and (max-width: 768px) {
+  .tt-content-area {
+    padding: 1.25rem 1rem;
+  }
+
+  .tt-topbar {
+    padding: 0 1rem;
+  }
+
+  .tt-topbar-center {
+    display: none; /* Can access search from explore page */
+  }
+
+  .tt-topbar-cta {
+    display: none;
+  }
+
+  .tt-hero-title {
+    font-size: 2.25rem;
+  }
+
+  .tt-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .tt-hero-stats-row {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .tt-problem-grid,
+  .tt-steps-grid,
+  .tt-featured-vars-grid,
+  .tt-demos-grid,
+  .tt-sources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-stats-scorecard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-dash-vars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-stepper-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tt-stepper-divider {
+    display: none;
+  }
+
+  .tt-coords-row,
+  .tt-time-row,
+  .tt-source-selector-grid,
+  .tt-settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-metadata-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tt-verdict-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .tt-verdict-rate-badge {
+    text-align: left;
+  }
+
+  .tt-landing-links {
+    display: none;
+  }
+
+  .tt-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .tt-compare-selectors-grid {
+    grid-template-columns: 1fr;
+  }
+}

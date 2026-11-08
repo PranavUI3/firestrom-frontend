@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Environmental Trend Map | TerraTrend – NASA Space Apps</title>
+  <meta name="description" content="Interactive geospatial intelligence map displaying global environmental trend observations and anomalies.">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="tt-app-layout">
+    <!-- Sidebar -->
+    <div id="tt-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="tt-main-wrapper">
+      <!-- Topbar Header -->
+      <div id="tt-header-container"></div>
+
+      <main class="tt-content-area">
+        <div class="tt-map-page-layout">
+          <!-- Floating Geospatial Filter Toolbar -->
+          <div class="tt-map-controls-card">
+            <div class="tt-map-filters-group">
+              <div class="tt-map-filter-item">
+                <span class="tt-map-filter-label">Variable:</span>
+                <select id="tt-map-var-filter" class="tt-select tt-map-select">
+                  <option value="all">All Variables (14+)</option>
+                  <option value="air_temp">Surface Air Temperature</option>
+                  <option value="lst">Land Surface Temperature</option>
+                  <option value="soil_moisture">Soil Moisture</option>
+                  <option value="ndvi">Vegetation Index (NDVI)</option>
+                  <option value="precipitation">Precipitation</option>
+                  <option value="sst">Sea Surface Temperature</option>
+                  <option value="ozone">Atmospheric Ozone</option>
+                  <option value="aod">Aerosol Optical Depth</option>
+                </select>
+              </div>
+
+              <div class="tt-map-filter-item">
+                <span class="tt-map-filter-label">NASA Mission:</span>
+                <select id="tt-map-dataset-filter" class="tt-select tt-map-select">
+                  <option value="all">All Missions</option>
+                  <option value="MODIS">MODIS (Terra/Aqua)</option>
+                  <option value="AIRS">AIRS (Aqua)</option>
+                  <option value="GPM">GPM IMERG</option>
+                  <option value="OMI">OMI (Aura)</option>
+                  <option value="GLDAS">GLDAS Noah</option>
+                  <option value="MERRA-2">MERRA-2</option>
+                </select>
+              </div>
+
+              <div class="tt-map-filter-item">
+                <span class="tt-map-filter-label">Significance:</span>
+                <select id="tt-map-sig-filter" class="tt-select tt-map-select">
+                  <option value="all">All Confidence Levels</option>
+                  <option value="statistically_significant">Significant (p &lt; 0.05)</option>
+                  <option value="not_significant">Not Significant (p &gt; 0.05)</option>
+                  <option value="inconclusive">Inconclusive / Marginal</option>
+                </select>
+              </div>
+
+              <button class="tt-btn tt-btn-outline tt-btn-sm" id="tt-map-reset-btn" title="Reset all filters">
+                <i data-lucide="rotate-ccw"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--accent-primary);" id="tt-map-points-count">
+                25 observation sites
+              </span>
+              <span class="tt-badge badge-neutral">Demo Geographical Grid</span>
+            </div>
+          </div>
+
+          <!-- Interactive Leaflet World Map Viewport -->
+          <div class="tt-map-viewport">
+            <div id="tt-leaflet-global-map"></div>
+
+            <!-- Map Legend Box -->
+            <div class="tt-map-legend-overlay">
+              <div class="tt-legend-title">Trend Direction &amp; Rigor</div>
+              <div class="tt-legend-items">
+                <div class="tt-legend-item">
+                  <span class="tt-legend-dot red"></span>
+                  <span>Increasing Trend (Significant)</span>
+                </div>
+                <div class="tt-legend-item">
+                  <span class="tt-legend-dot blue"></span>
+                  <span>Decreasing Trend (Significant)</span>
+                </div>
+                <div class="tt-legend-item">
+                  <span class="tt-legend-dot green"></span>
+                  <span>Stable / No Statistically Significant Trend</span>
+                </div>
+                <div class="tt-legend-item">
+                  <span class="tt-legend-dot grey"></span>
+                  <span>Inconclusive / High Cloud Noise</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/mockData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/globalMap.js"></script>
+</body>
+</html>
