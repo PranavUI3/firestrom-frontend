@@ -79,8 +79,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   // Populate Dropdowns & Options
-  populateVariablesDropdown();
-  populateRegionsDropdown();
+  await populateVariablesDropdown();
+  await populateRegionsDropdown();
+  initPresetBenchmarkButtons();
   populateYearsDropdown();
   initLeafletMap();
   initDataSources();
@@ -94,11 +95,18 @@ document.addEventListener('DOMContentLoaded', async function () {
   /**
    * Populate Variables Select Dropdown
    */
-  function populateVariablesDropdown() {
+  async function populateVariablesDropdown() {
     if (!variableSelect) return;
-    variableSelect.innerHTML = TerraMockData.variables.map(v => `
+    let list = TerraMockData.variables;
+    try {
+      const res = await TerraAPI.getVariables();
+      if (res && res.data && res.data.length > 0) list = res.data;
+    } catch (e) {
+      console.warn('Using local variable list', e);
+    }
+    variableSelect.innerHTML = list.map(v => `
       <option value="${v.id}" ${v.id === state.variableId ? 'selected' : ''}>
-        ${v.name} (${v.categoryName}) - [${v.shortUnit}]
+        ${v.name} (${v.categoryName || v.category}) - [${v.shortUnit || v.unit}]
       </option>
     `).join('');
 
@@ -134,13 +142,20 @@ document.addEventListener('DOMContentLoaded', async function () {
   /**
    * Populate Preset Regions Dropdown
    */
-  function populateRegionsDropdown() {
+  async function populateRegionsDropdown() {
     if (!regionSelect) return;
+    let list = TerraMockData.regions;
+    try {
+      const res = await TerraAPI.getRegions();
+      if (res && res.data && res.data.length > 0) list = res.data;
+    } catch (e) {
+      console.warn('Using local region list', e);
+    }
     regionSelect.innerHTML = `
       <option value="custom">-- Custom Coordinates / Map Selection --</option>
-      ${TerraMockData.regions.map(r => `
+      ${list.map(r => `
         <option value="${r.id}" ${r.id === state.regionId ? 'selected' : ''}>
-          ${r.name} (${r.country})
+          ${r.name} (${r.country || 'Global'})
         </option>
       `).join('')}
     `;
@@ -469,3 +484,57 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
   }
 });
+
+  /**
+   * User Feature 5: Preset NASA Benchmark Case Studies
+   */
+  function initPresetBenchmarkButtons() {
+    const presetBtns = document.querySelectorAll('.tt-preset-case-btn');
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const vId = btn.getAttribute('data-var');
+        const rId = btn.getAttribute('data-region');
+        const dsId = btn.getAttribute('data-dataset');
+        const sYr = parseInt(btn.getAttribute('data-start') || '2000', 10);
+        const eYr = parseInt(btn.getAttribute('data-end') || '2023', 10);
+
+        if (variableSelect) {
+          variableSelect.value = vId;
+          state.variableId = vId;
+        }
+        if (regionSelect) {
+          regionSelect.value = rId;
+          state.regionId = rId;
+          const matched = TerraMockData.regions.find(item => item.id === rId);
+          if (matched) {
+            state.regionName = matched.name;
+            state.lat = matched.lat;
+            state.lon = matched.lon;
+            if (latInput) latInput.value = matched.lat;
+            if (lonInput) lonInput.value = matched.lon;
+            if (detectiveMap) {
+              detectiveMap.setView([matched.lat, matched.lon], 5);
+              if (mapMarker) mapMarker.setLatLng([matched.lat, matched.lon]);
+            }
+          }
+        }
+        if (startYearSelect) {
+          startYearSelect.value = sYr.toString();
+          state.startYear = sYr;
+        }
+        if (endYearSelect) {
+          endYearSelect.value = eYr.toString();
+          state.endYear = eYr;
+        }
+        if (dsId) {
+          state.datasetId = dsId;
+          selectDataSource(dsId);
+        }
+
+        updateVariablePreview();
+        updateSummarySidebar();
+        TerraUtils.showToast(`Loaded benchmark preset: ${btn.textContent.trim()}`, 'success');
+      });
+    });
+  }

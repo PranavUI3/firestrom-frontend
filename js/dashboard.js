@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   let miniMapInstance = null;
 
   // Initialize Dashboard Sections
-  initQuickStats();
+  await initQuickStats();
   await initGlobalTrendChart('all');
   initFeaturedVariables();
   initRecentDiscoveries();
@@ -27,12 +27,31 @@ document.addEventListener('DOMContentLoaded', async function () {
   /**
    * Statistical Overview Cards
    */
-  function initQuickStats() {
-    // Demo numbers labeled as sample data
-    const varsCount = TerraMockData.variables.length;
-    const regionsCount = TerraMockData.regions.length;
-    const sigTrendsCount = TerraMockData.globalTrendPoints.filter(p => p.significance === 'statistically_significant').length;
-    const datasetsCount = TerraMockData.datasets.length;
+  async function initQuickStats() {
+    let varsCount = TerraMockData.variables.length;
+    let regionsCount = TerraMockData.regions.length;
+    let sigTrendsCount = TerraMockData.globalTrendPoints.filter(p => p.significance === 'statistically_significant').length;
+    let datasetsCount = TerraMockData.datasets.length;
+    let totalTrends = TerraMockData.globalTrendPoints.length;
+
+    try {
+      const [vRes, rRes, tRes, dRes] = await Promise.all([
+        TerraAPI.getVariables(),
+        TerraAPI.getRegions(),
+        TerraAPI.getGlobalTrends(),
+        TerraAPI.getDatasets()
+      ]);
+      if (vRes && vRes.data) varsCount = vRes.data.length;
+      if (rRes && rRes.data) regionsCount = rRes.data.length;
+      if (dRes && dRes.data) datasetsCount = dRes.data.length;
+      if (tRes && tRes.data) {
+        totalTrends = tRes.data.length;
+        sigTrendsCount = tRes.data.filter(p => p.significance === 'statistically_significant').length;
+      }
+    } catch (e) {
+      console.warn('Dashboard quick stats using fallback data', e);
+    }
+
 
     const elVars = document.getElementById('tt-stat-vars-count');
     const elRegions = document.getElementById('tt-stat-regions-count');

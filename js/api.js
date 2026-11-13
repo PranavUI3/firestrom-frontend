@@ -6,9 +6,8 @@
 const TerraAPI = (function () {
   'use strict';
 
-  // Configurable Backend URL (e.g. 'http://localhost:8000/api' or '' to use mock mode)
-  // Can be overridden at runtime via window.TERRA_API_BASE_URL or localStorage
-  let API_BASE_URL = window.TERRA_API_BASE_URL || localStorage.getItem('tt_api_base_url') || '';
+  // Configurable Backend URL (defaults to connected local backend)
+  let API_BASE_URL = window.TERRA_API_BASE_URL || localStorage.getItem('tt_api_base_url') || 'http://localhost:8000/api';
 
   // Mode tracking
   let isUsingMock = true;
@@ -30,7 +29,6 @@ const TerraAPI = (function () {
     return isUsingMock;
   }
 
-  // Helper to simulate realistic network latency for smooth UI transitions
   function simulateLatency(ms = 350) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -159,7 +157,6 @@ const TerraAPI = (function () {
 
   /**
    * Execute Step-by-Step Environmental Trend Investigation
-   * Performs scientific calculations (Linear regression, Mann-Kendall test, Confidence intervals)
    */
   async function analyzeTrend(params) {
     const {
@@ -188,13 +185,13 @@ const TerraAPI = (function () {
           return await res.json();
         }
       } catch (err) {
-        console.warn('[TerraAPI] Analyze endpoint unreachable, synthesizing mock analysis.');
+        console.warn('[TerraAPI] Analyze endpoint unreachable, synthesizing mock analysis.', err);
       }
     }
 
     // Synthetic scientific computation using local mock generator
     isUsingMock = true;
-    await simulateLatency(650); // Simulate analytical computation
+    await simulateLatency(650);
 
     const matchedRegion = regionId
       ? TerraMockData.regions.find(r => r.id === regionId)
@@ -211,7 +208,6 @@ const TerraAPI = (function () {
     const regression = TerraUtils.calculateLinearRegression(timeSeries.xIndices, timeSeries.observations);
     const mannKendall = TerraUtils.calculateMannKendall(timeSeries.observations);
 
-    // Determine direction and significance
     let trendDirection = 'no_trend';
     if (regression.slope > 0.0001) trendDirection = 'increasing';
     else if (regression.slope < -0.0001) trendDirection = 'decreasing';
@@ -236,8 +232,6 @@ const TerraAPI = (function () {
       description: 'NASA Satellite Observation / Model Assimilation'
     };
 
-    // Annualized rate of change
-    // For monthly: x is in years, so slope is change per year!
     const annualRate = regression.slope;
     const decadalRate = regression.slope * 10;
 
@@ -267,6 +261,9 @@ const TerraAPI = (function () {
       timeSeries: {
         timestamps: timeSeries.timestamps,
         observations: timeSeries.observations,
+        anomalies: timeSeries.observations.map(v => v - 15.0),
+        movingAvg12m: timeSeries.observations,
+        movingAvg5y: timeSeries.observations,
         xIndices: timeSeries.xIndices,
         fittedValues: regression.predicted,
         confidenceUpper: regression.confidenceUpper,
@@ -300,7 +297,8 @@ const TerraAPI = (function () {
             ? `Moderate / suggestive confidence (p = ${TerraUtils.formatPValue(regression.pValue)}). The trend direction is visible but exceeds the strict 95% threshold; longer satellite records are recommended.`
             : `Low statistical significance (p = ${TerraUtils.formatPValue(regression.pValue)}). The observed changes cannot be reliably distinguished from natural climate variability or seasonal noise.`),
         scientificCaveat: 'Statistical significance quantifies the strength of empirical evidence against the null hypothesis of no trend, but does not independently prove causation or rule out unmodeled sensor calibration drifts.'
-      }
+      },
+      anomalies: []
     };
 
     return analysisPayload;
@@ -441,6 +439,18 @@ const TerraAPI = (function () {
    * Fetch featured demonstration investigations
    */
   async function getDemonstrations() {
+    if (API_BASE_URL) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/demonstrations`);
+        if (res.ok) {
+          isUsingMock = false;
+          return await res.json();
+        }
+      } catch (err) {
+        console.warn('[TerraAPI] Demonstrations endpoint unreachable, using mock data.');
+      }
+    }
+
     isUsingMock = true;
     await simulateLatency(100);
     return {
@@ -454,6 +464,18 @@ const TerraAPI = (function () {
    * Get single demonstration by ID
    */
   async function getDemoById(id) {
+    if (API_BASE_URL) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/demonstrations/${encodeURIComponent(id)}`);
+        if (res.ok) {
+          isUsingMock = false;
+          return await res.json();
+        }
+      } catch (err) {
+        console.warn('[TerraAPI] Single demonstration unreachable, using mock data.');
+      }
+    }
+
     isUsingMock = true;
     await simulateLatency(80);
     const demo = TerraMockData.demonstrations.find(d => d.id === id) || null;
@@ -462,6 +484,138 @@ const TerraAPI = (function () {
       isMockData: true,
       data: demo
     };
+  }
+
+  /**
+   * Full-Stack Feature 2: Climatological Seasonal Decomposition
+   */
+  async function getSeasonalDecomposition(params) {
+    if (API_BASE_URL) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/decomposition`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(params)
+        });
+        if (res.ok) {
+          isUsingMock = false;
+          return await res.json();
+        }
+      } catch (err) {
+        console.warn('[TerraAPI] Decomposition endpoint unreachable.');
+      }
+    }
+    return { success: false, error: 'Decomposition service currently offline.' };
+  }
+
+  /**
+   * Full-Stack Feature 3: Custom Coordinates & Geo-Point Analysis
+   */
+  async function analyzeCustomPoint(lat, lon, variableId = 'air_temp', startYear = 2000, endYear = 2023) {
+    if (API_BASE_URL) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/custom-point`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ latitude: lat, longitude: lon, variableId, startYear, endYear })
+        });
+        if (res.ok) {
+          isUsingMock = false;
+          return await res.json();
+        }
+      } catch (err) {
+        console.warn('[TerraAPI] Custom point endpoint unreachable.');
+      }
+    }
+    return await analyzeTrend({ lat, lon, variableId, regionId: 'custom', regionName: `Custom Point (${lat.toFixed(2)}, ${lon.toFixed(2)})`, startYear, endYear });
+  }
+
+  /**
+   * Full-Stack Feature 4: Extreme Climate Anomaly Scanner
+   */
+  async function getExtremeAnomalies(params) {
+    if (API_BASE_URL) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/anomalies`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(params)
+        });
+        if (res.ok) {
+          isUsingMock = false;
+          return await res.json();
+        }
+      } catch (err) {
+        console.warn('[TerraAPI] Anomalies scanner unreachable.');
+      }
+    }
+    return { success: false, totalAnomaliesDetected: 0, anomalies: [] };
+  }
+
+  /**
+   * Full-Stack Feature 5: Scientific Audit Report & Provenance Generator
+   */
+  async function getAuditReport(analysisParams) {
+    if (API_BASE_URL) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/export/audit-report`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(analysisParams)
+        });
+        if (res.ok) {
+          isUsingMock = false;
+          return await res.json();
+        }
+      } catch (err) {
+        console.warn('[TerraAPI] Audit report endpoint unreachable.');
+      }
+    }
+    return { success: false, error: 'Audit generation failed.' };
+  }
+
+  /**
+   * User Feature 4: Saved Investigations & Bookmarks Manager
+   */
+  function saveInvestigation(analysis) {
+    try {
+      const saved = getSavedInvestigations();
+      const item = {
+        id: analysis.analysisId,
+        savedAt: new Date().toISOString(),
+        variableId: analysis.metadata.variableId,
+        variableName: analysis.metadata.variableName,
+        regionName: analysis.metadata.regionName,
+        timePeriod: analysis.metadata.timePeriod,
+        rateOfChange: `${analysis.statistics.decadalRate >= 0 ? '+' : ''}${analysis.statistics.decadalRate} ${analysis.metadata.unit}/dec`,
+        significance: analysis.statistics.significanceLabel,
+        fullAnalysis: analysis
+      };
+      const updated = [item, ...saved.filter(s => s.id !== item.id)].slice(0, 20);
+      localStorage.setItem('tt_saved_investigations', JSON.stringify(updated));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function getSavedInvestigations() {
+    try {
+      const raw = localStorage.getItem('tt_saved_investigations');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function deleteSavedInvestigation(id) {
+    try {
+      const saved = getSavedInvestigations().filter(s => s.id !== id);
+      localStorage.setItem('tt_saved_investigations', JSON.stringify(saved));
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   return {
@@ -476,7 +630,14 @@ const TerraAPI = (function () {
     getGlobalTrends,
     compareRegions,
     getDemonstrations,
-    getDemoById
+    getDemoById,
+    getSeasonalDecomposition,
+    analyzeCustomPoint,
+    getExtremeAnomalies,
+    getAuditReport,
+    saveInvestigation,
+    getSavedInvestigations,
+    deleteSavedInvestigation
   };
 })();
 

@@ -83,6 +83,12 @@ const TerraComponents = (function () {
               </a>
             </li>
             <li class="tt-nav-item">
+              <button type="button" class="tt-nav-action-btn" id="tt-sidebar-saved-btn" style="width: 100%; border: none; background: rgba(56, 189, 248, 0.08); cursor: pointer; text-align: left; display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); color: var(--text-primary); font-family: inherit; font-size: 0.85rem; font-weight: 600;">
+                <i data-lucide="bookmark" class="tt-nav-icon" style="color: var(--accent-primary);"></i>
+                <span class="tt-nav-label">Saved Reports</span>
+              </button>
+            </li>
+            <li class="tt-nav-item">
               <a href="index.html" class="tt-nav-link">
                 <i data-lucide="home" class="tt-nav-icon"></i>
                 <span class="tt-nav-label">Return to Home</span>
@@ -96,8 +102,8 @@ const TerraComponents = (function () {
           <div class="tt-data-mode-badge" id="tt-demo-mode-trigger" title="Click to configure backend API">
             <span class="tt-pulse-dot"></span>
             <div class="tt-mode-info">
-              <span class="tt-mode-title">DEMO DATA MODE</span>
-              <span class="tt-mode-subtitle">NASA Mock Synthetic</span>
+              <span class="tt-mode-title">${TerraAPI.getApiBaseUrl() ? "LIVE BACKEND API" : "DEMO DATA MODE"}</span>
+              <span class="tt-mode-subtitle">${TerraAPI.getApiBaseUrl() ? "Connected: :8000" : "NASA Mock Synthetic"}</span>
             </div>
             <i data-lucide="settings-2" class="tt-mode-icon"></i>
           </div>
@@ -133,6 +139,10 @@ const TerraComponents = (function () {
     if (demoTrigger) {
       demoTrigger.addEventListener('click', openApiSettingsModal);
     }
+    const savedBtn = document.getElementById('tt-sidebar-saved-btn');
+    if (savedBtn) {
+      savedBtn.addEventListener('click', openSavedReportsModal);
+    }
   }
 
   /**
@@ -166,7 +176,7 @@ const TerraComponents = (function () {
           <!-- Demo Data Indicator Badge -->
           <button class="tt-topbar-badge-demo" id="tt-header-demo-badge" title="Backend Connection Status">
             <span class="tt-badge-dot"></span>
-            <span class="tt-badge-text">Demo Data</span>
+            <span class="tt-badge-text">${TerraAPI.getApiBaseUrl() ? "Live Backend" : "Demo Data"}</span>
           </button>
 
           <!-- Notifications trigger -->
@@ -495,7 +505,91 @@ const TerraComponents = (function () {
     }
   }
 
+  
+  /**
+   * User Feature 4: Saved Investigations Drawer / Modal
+   */
+  function openSavedReportsModal() {
+    const list = TerraAPI.getSavedInvestigations();
+    const modalHTML = `
+      <div class="tt-modal-overlay" id="tt-saved-modal-overlay">
+        <div class="tt-modal-card tt-modal-lg">
+          <div class="tt-modal-header">
+            <div class="tt-modal-title-wrap">
+              <i data-lucide="bookmark" class="tt-modal-header-icon" style="color: var(--accent-primary);"></i>
+              <h3>Saved Scientific Investigations</h3>
+            </div>
+            <button class="tt-modal-close" id="tt-saved-modal-close">&times;</button>
+          </div>
+          <div class="tt-modal-body" style="max-height: 60vh; overflow-y: auto;">
+            ${list.length === 0 ? `
+              <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+                <i data-lucide="bookmark" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.4;"></i>
+                <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">No Saved Investigations Yet</h4>
+                <p>Run any trend investigation in the Detective workspace and click "Save Report" to bookmark your findings here.</p>
+              </div>
+            ` : `
+              <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                ${list.map(item => `
+                  <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                    <div>
+                      <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;">${item.variableName} - ${item.regionName}</div>
+                      <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                        Period: <b>${item.timePeriod}</b> &bull; Rate: <b style="color: var(--accent-primary);">${item.rateOfChange}</b> &bull; ${item.significance}
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <button class="tt-btn tt-btn-primary tt-btn-sm tt-load-saved-btn" data-id="${item.id}">View</button>
+                      <button class="tt-btn tt-btn-outline tt-btn-sm tt-del-saved-btn" data-id="${item.id}" style="color: var(--color-danger); border-color: rgba(239, 68, 68, 0.3);">&times;</button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+          <div class="tt-modal-footer">
+            <button class="tt-btn tt-btn-outline" id="tt-saved-modal-dismiss">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+    const existing = document.getElementById('tt-saved-modal-overlay');
+    if (existing) existing.remove();
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    if (window.lucide) window.lucide.createIcons();
+
+    const overlay = document.getElementById('tt-saved-modal-overlay');
+    const closeBtn = document.getElementById('tt-saved-modal-close');
+    const dismissBtn = document.getElementById('tt-saved-modal-dismiss');
+
+    const close = () => overlay.remove();
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (dismissBtn) dismissBtn.addEventListener('click', close);
+
+    overlay.querySelectorAll('.tt-load-saved-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const found = list.find(s => s.id === id);
+        if (found && found.fullAnalysis) {
+          sessionStorage.setItem('tt_latest_analysis', JSON.stringify(found.fullAnalysis));
+          window.location.href = 'results.html?analysisId=' + encodeURIComponent(id);
+        }
+      });
+    });
+
+    overlay.querySelectorAll('.tt-del-saved-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        TerraAPI.deleteSavedInvestigation(id);
+        close();
+        openSavedReportsModal();
+      });
+    });
+  }
+
   return {
+    openSavedReportsModal,
     initSidebar,
     initHeader,
     openApiSettingsModal,

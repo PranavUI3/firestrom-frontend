@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const compareBtn = document.getElementById('tt-comp-run-btn');
 
   // Populate Dropdowns
-  populateSelectors();
+  await populateSelectors();
   setupPresetComparisons();
 
   // Run initial comparison
@@ -32,22 +32,32 @@ document.addEventListener('DOMContentLoaded', async function () {
   /**
    * Populate Dropdowns
    */
-  function populateSelectors() {
+  async function populateSelectors() {
+    let rList = TerraMockData.regions;
+    let vList = TerraMockData.variables;
+    try {
+      const [rRes, vRes] = await Promise.all([TerraAPI.getRegions(), TerraAPI.getVariables()]);
+      if (rRes && rRes.data && rRes.data.length > 0) rList = rRes.data;
+      if (vRes && vRes.data && vRes.data.length > 0) vList = vRes.data;
+    } catch (e) {
+      console.warn('Using local lists for comparison', e);
+    }
+
     if (regionASelect) {
-      regionASelect.innerHTML = TerraMockData.regions.map((r, i) => `
-        <option value="${r.id}" ${i === 0 ? 'selected' : ''}>${r.name} (${r.country})</option>
+      regionASelect.innerHTML = rList.map((r, i) => `
+        <option value="${r.id}" ${i === 0 ? 'selected' : ''}>${r.name} (${r.country || 'Global'})</option>
       `).join('');
     }
 
     if (regionBSelect) {
-      regionBSelect.innerHTML = TerraMockData.regions.map((r, i) => `
-        <option value="${r.id}" ${i === 1 ? 'selected' : ''}>${r.name} (${r.country})</option>
+      regionBSelect.innerHTML = rList.map((r, i) => `
+        <option value="${r.id}" ${i === 1 ? 'selected' : ''}>${r.name} (${r.country || 'Global'})</option>
       `).join('');
     }
 
     if (variableSelect) {
-      variableSelect.innerHTML = TerraMockData.variables.map(v => `
-        <option value="${v.id}" ${v.id === 'lst' ? 'selected' : ''}>${v.name} (${v.shortUnit})</option>
+      variableSelect.innerHTML = vList.map(v => `
+        <option value="${v.id}" ${v.id === 'air_temp' || v.id === 'lst' ? 'selected' : ''}>${v.name} (${v.shortUnit || v.unit})</option>
       `).join('');
     }
 
