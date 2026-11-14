@@ -1,0 +1,262 @@
+/* ==========================================================================
+   TerraTrend – Earth Systems Trend Detective
+   variables.css - Environmental Variables Catalog, Search & Filter Interface
+   ========================================================================== */
+
+/* Filter & Search Toolbar */
+.tt-filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.tt-filter-search-box {
+  flex: 1;
+  min-width: 260px;
+  max-width: 440px;
+  position: relative;
+}
+
+.tt-filter-search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.6rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  transition: all var(--transition-fast);
+}
+
+.tt-filter-search-box input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: var(--accent-primary-glow);
+  background: rgba(16, 24, 39, 0.95);
+}
+
+.tt-filter-search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.tt-filter-search-icon {
+  position: absolute;
+  left: 0.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+/* Category Filter Pills */
+.tt-category-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tt-category-filter-btn {
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+}
+
+.tt-category-filter-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+.tt-category-filter-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+/* Results Status Bar */
+.tt-vars-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.tt-vars-result-count {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Variables Catalog Grid */
+.tt-variables-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.75rem;
+}
+
+/* Variable Card Preview */
+.tt-var-card-preview {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.tt-var-card-preview:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: var(--shadow-lg), 0 0 20px rgba(56, 189, 248, 0.08);
+}
+
+.tt-var-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.15rem;
+}
+
+.tt-var-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tt-var-card-icon i {
+  width: 22px;
+  height: 22px;
+}
+
+.tt-var-card-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.tt-var-card-unit {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--accent-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.tt-var-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Footer & Source Metadata */
+.tt-var-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.tt-var-card-source {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tt-var-card-actions {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+/* Empty State */
+.tt-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-light);
+}
+
+/* Responsive Rules for Variables Page */
+@media screen and (max-width: 900px) {
+  .tt-filter-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.25rem;
+  }
+
+  .tt-filter-search-box {
+    max-width: 100%;
+  }
+
+  .tt-variables-catalog-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .tt-var-card-preview {
+    padding: 1.25rem;
+  }
+
+  .tt-category-pills-bar {
+    gap: 0.35rem;
+  }
+
+  .tt-category-filter-btn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  .tt-var-card-actions {
+    flex-direction: column;
+  }
+
+  .tt-var-card-actions .tt-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

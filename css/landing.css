@@ -50,6 +50,129 @@
   gap: 1rem;
 }
 
+/* Mobile Nav Toggle Button */
+.tt-landing-mobile-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tt-landing-mobile-toggle:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Mobile Nav Drawer */
+.tt-landing-mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 300px;
+  height: 100vh;
+  background: rgba(12, 19, 34, 0.96);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid var(--border-subtle);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: right var(--transition-normal);
+  box-shadow: var(--shadow-lg);
+  padding: 1.5rem;
+}
+
+.tt-landing-mobile-drawer.open {
+  right: 0;
+}
+
+.tt-landing-mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tt-landing-mobile-close {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tt-landing-mobile-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger);
+}
+
+.tt-landing-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.tt-landing-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.tt-landing-mobile-link i {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-primary);
+}
+
+.tt-landing-mobile-link:hover,
+.tt-landing-mobile-link.active {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--text-primary);
+}
+
+.tt-landing-mobile-actions {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.tt-landing-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+}
+
+.tt-landing-drawer-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* Hero Section */
 .tt-hero-section {
   position: relative;
@@ -188,68 +311,257 @@
 
 .tt-earth-card {
   width: 100%;
-  max-width: 460px;
-  background: rgba(16, 24, 39, 0.7);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  max-width: 480px;
+  background: rgba(14, 22, 38, 0.78);
+  border: 1px solid rgba(56, 189, 248, 0.25);
   border-radius: var(--radius-lg);
-  padding: 1.75rem;
-  box-shadow: var(--shadow-lg), 0 0 30px rgba(56, 189, 248, 0.15);
-  backdrop-filter: blur(16px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg), 0 0 35px rgba(56, 189, 248, 0.16);
+  backdrop-filter: blur(20px);
   position: relative;
-}
-
-.tt-earth-visual-sphere {
-  width: 220px;
-  height: 220px;
-  margin: 0 auto 1.5rem;
-  border-radius: 50%;
-  position: relative;
-  background: radial-gradient(circle at 35% 35%, #0EA5E9 0%, #0369A1 40%, #082F49 70%, #020617 100%);
-  box-shadow: inset -15px -15px 35px rgba(0, 0, 0, 0.8),
-              0 0 40px rgba(56, 189, 248, 0.35);
   overflow: hidden;
+  transition: border-color var(--transition-normal);
 }
 
-.tt-earth-orbit-ring {
+.tt-earth-card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+/* Card Header */
+.tt-earth-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tt-earth-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+}
+
+.tt-earth-tilt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: var(--accent-secondary);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.tt-earth-tilt-badge i {
+  width: 13px;
+  height: 13px;
+}
+
+/* Multi-Layer Mode Selectors */
+.tt-earth-modes-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  background: rgba(8, 13, 24, 0.6);
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.tt-earth-mode-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tt-earth-mode-btn i {
+  width: 14px;
+  height: 14px;
+}
+
+.tt-earth-mode-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tt-earth-mode-btn.active {
+  background: rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+/* Authentic 3D Earth Globe Canvas Viewport */
+.tt-earth-visual-sphere {
+  width: 100%;
+  height: 290px;
+  margin: 0 auto 1.25rem;
+  border-radius: var(--radius-md);
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, rgba(8, 13, 24, 0.95) 70%);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+}
+
+.tt-earth-visual-sphere:active {
+  cursor: grabbing;
+}
+
+#tt-earth-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 3D Orbiting Satellites Overlay */
+.tt-earth-satellites-overlay {
   position: absolute;
-  top: -25%;
-  left: -25%;
-  width: 150%;
-  height: 150%;
-  border: 1px dashed rgba(56, 189, 248, 0.3);
-  border-radius: 50%;
-  transform: rotateX(65deg) rotateY(15deg);
-  animation: orbitRotate 24s linear infinite;
+  inset: 0;
+  pointer-events: none;
 }
 
-@keyframes orbitRotate {
-  from { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
-  to { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
-}
-
-.tt-satellite-dot {
+.tt-satellite-3d-node {
   position: absolute;
-  top: 15%;
-  left: 20%;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+  transition: opacity var(--transition-fast);
+}
+
+.tt-sat-ping {
   width: 10px;
   height: 10px;
-  background: #38BDF8;
   border-radius: 50%;
-  box-shadow: 0 0 10px #38BDF8;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  animation: satPulse 2.5s ease-in-out infinite;
+  cursor: pointer;
 }
 
-.tt-satellite-tag {
+@keyframes satPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.tt-sat-card {
   position: absolute;
-  top: -22px;
-  left: 15px;
-  background: rgba(8, 13, 24, 0.85);
+  top: -28px;
+  left: 10px;
+  background: rgba(8, 13, 24, 0.92);
   border: 1px solid rgba(56, 189, 248, 0.4);
-  padding: 0.1rem 0.4rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 4px;
-  font-size: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.tt-sat-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.tt-sat-info {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+/* Floating Controls Overlay */
+.tt-earth-controls-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  z-index: 25;
+}
+
+.tt-earth-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(8, 13, 24, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+}
+
+.tt-earth-ctrl-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.tt-earth-ctrl-btn i {
+  width: 12px;
+  height: 12px;
+  color: var(--accent-primary);
+}
+
+/* Drag Gesture Hint */
+.tt-earth-drag-hint {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  background: rgba(8, 13, 24, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.tt-earth-drag-hint i {
+  width: 11px;
+  height: 11px;
+  color: var(--accent-secondary);
+}
+
+.tt-mono-accent {
   font-family: var(--font-mono);
   color: var(--accent-primary);
-  white-space: nowrap;
 }
 
 .tt-hero-live-scan {

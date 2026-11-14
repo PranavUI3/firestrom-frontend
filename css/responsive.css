@@ -1,26 +1,48 @@
 /* ==========================================================================
    TerraTrend – Earth Systems Trend Detective
-   responsive.css - Media Queries & Mobile Adaptation
+   responsive.css - Comprehensive Multi-Device Media Queries & Adaptive UI/UX
    ========================================================================== */
 
-/* Tablet & Smaller Desktops (<= 1200px) */
+/* --------------------------------------------------------------------------
+   1. Ultra-Wide & 2K/4K Displays (>= 1441px)
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 1441px) {
+  .tt-landing-container,
+  .tt-app-layout {
+    max-width: 1560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tt-hero-title {
+    font-size: 3.85rem;
+  }
+
+  .tt-hero-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4.5rem;
+  }
+
+  .tt-earth-card {
+    max-width: 520px;
+  }
+
+  .tt-earth-visual-sphere {
+    height: 330px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Small Desktops & Landscape Tablets (1025px - 1200px)
+   -------------------------------------------------------------------------- */
 @media screen and (max-width: 1200px) {
   .tt-hero-title {
     font-size: 2.85rem;
   }
 
-  .tt-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .tt-stats-scorecard-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .tt-steps-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
+  .tt-stats-grid,
+  .tt-stats-scorecard-grid,
+  .tt-steps-grid,
   .tt-featured-vars-grid,
   .tt-demos-grid,
   .tt-sources-grid {
@@ -39,10 +61,17 @@
   .tt-dual-header-grid {
     grid-template-columns: 1fr;
   }
+
+  .tt-about-grid {
+    grid-template-columns: 1.8fr 1.2fr;
+    gap: 2rem;
+  }
 }
 
-/* Tablet Portrait & Large Phones (<= 992px) */
-@media screen and (max-width: 992px) {
+/* --------------------------------------------------------------------------
+   3. Medium Tablets & Small Laptops (769px - 1024px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1024px) {
   .tt-main-wrapper {
     margin-left: 0 !important;
   }
@@ -51,6 +80,7 @@
     transform: translateX(-100%);
     width: 280px !important;
     box-shadow: var(--shadow-lg);
+    z-index: 100;
   }
 
   .tt-sidebar.mobile-open {
@@ -60,11 +90,9 @@
   .tt-sidebar-backdrop {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
     z-index: 95;
   }
 
@@ -83,6 +111,8 @@
 
   .tt-hero-visual {
     order: -1;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
   .tt-dash-two-col {
@@ -95,69 +125,117 @@
 
   .tt-footer-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .tt-compare-selectors-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .tt-about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .tt-toc-sticky {
+    position: static;
+    max-height: none;
+    margin-bottom: 2rem;
+  }
 }
 
-/* Mobile Devices (<= 768px) */
+/* --------------------------------------------------------------------------
+   4. Portrait Tablets & Phablets (577px - 768px)
+   -------------------------------------------------------------------------- */
 @media screen and (max-width: 768px) {
+  /* Navigation & Headers */
+  .tt-landing-nav {
+    height: 70px;
+  }
+
+  .tt-landing-links {
+    display: none !important;
+  }
+
+  .tt-landing-nav-actions .tt-btn {
+    display: none;
+  }
+
+  .tt-landing-mobile-toggle {
+    display: flex !important;
+  }
+
   .tt-content-area {
     padding: 1.25rem 1rem;
   }
 
   .tt-topbar {
     padding: 0 1rem;
+    height: 64px;
   }
 
-  .tt-topbar-center {
-    display: none; /* Can access search from explore page */
-  }
-
+  .tt-topbar-center,
   .tt-topbar-cta {
     display: none;
   }
 
+  /* Hero Section */
+  .tt-hero-section {
+    padding-top: 90px;
+    padding-bottom: 40px;
+    min-height: auto;
+  }
+
   .tt-hero-title {
-    font-size: 2.25rem;
+    font-size: 2.35rem;
+    line-height: 1.15;
   }
 
   .tt-hero-subtitle {
-    font-size: 1rem;
+    font-size: 1.02rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .tt-hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .tt-hero-cta-group .tt-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .tt-hero-stats-row {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
   }
 
+  /* Grids & Cards */
   .tt-problem-grid,
   .tt-steps-grid,
   .tt-featured-vars-grid,
   .tt-demos-grid,
-  .tt-sources-grid {
+  .tt-sources-grid,
+  .tt-stats-grid,
+  .tt-stats-scorecard-grid,
+  .tt-dash-vars-grid,
+  .tt-variables-catalog-grid,
+  .tt-demos-gallery-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
-  .tt-stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tt-stats-scorecard-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tt-dash-vars-grid {
-    grid-template-columns: 1fr;
-  }
-
+  /* Stepper Bar & Inputs */
   .tt-stepper-bar {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+    padding: 1.25rem;
   }
 
   .tt-stepper-divider {
@@ -167,7 +245,8 @@
   .tt-coords-row,
   .tt-time-row,
   .tt-source-selector-grid,
-  .tt-settings-grid {
+  .tt-settings-grid,
+  .tt-compare-selectors-grid {
     grid-template-columns: 1fr;
   }
 
@@ -175,22 +254,34 @@
     grid-template-columns: 1fr 1fr;
   }
 
+  /* Verdict & Analysis Results */
   .tt-verdict-banner {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.25rem;
+    padding: 1.25rem;
   }
 
   .tt-verdict-rate-badge {
     text-align: left;
+    width: 100%;
   }
 
-  .tt-landing-links {
-    display: none;
+  .tt-results-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
   }
 
+  .tt-results-header-actions .tt-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Footer */
   .tt-footer-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .tt-footer-bottom {
@@ -199,7 +290,289 @@
     text-align: center;
   }
 
-  .tt-compare-selectors-grid {
+  /* Modals */
+  .tt-modal-dialog {
+    width: 95% !important;
+    max-height: 90vh !important;
+    margin: 1rem auto;
+    padding: 1.25rem !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Standard Mobile Phones (381px - 576px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 576px) {
+  .tt-landing-container {
+    padding: 0 1rem;
+  }
+
+  .tt-hero-title {
+    font-size: 1.95rem;
+    letter-spacing: -0.02em;
+  }
+
+  .tt-hero-badge {
+    font-size: 0.74rem;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .tt-hero-stats-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .tt-hero-stat-value {
+    font-size: 1.35rem;
+  }
+
+  .tt-hero-stat-label {
+    font-size: 0.74rem;
+  }
+
+  /* Earth Telemetry Card Adaptation */
+  .tt-earth-card {
+    padding: 1.15rem;
+    max-width: 100%;
+  }
+
+  .tt-earth-visual-sphere {
+    height: 250px;
+    margin-bottom: 1rem;
+  }
+
+  .tt-earth-modes-bar {
+    gap: 0.25rem;
+    padding: 0.2rem;
+  }
+
+  .tt-earth-mode-btn {
+    font-size: 0.68rem;
+    padding: 0.35rem 0.4rem;
+    gap: 0.25rem;
+  }
+
+  .tt-earth-mode-btn span {
+    display: inline-block;
+  }
+
+  .tt-earth-controls-overlay {
+    bottom: 8px;
+    left: 8px;
+    gap: 0.25rem;
+  }
+
+  .tt-earth-ctrl-btn {
+    padding: 0.22rem 0.45rem;
+    font-size: 0.64rem;
+  }
+
+  .tt-earth-drag-hint {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.45rem;
+    top: 8px;
+    right: 8px;
+  }
+
+  .tt-hero-live-scan {
+    padding: 0.75rem;
+  }
+
+  .tt-scan-title {
+    font-size: 0.7rem;
+  }
+
+  .tt-scan-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  /* Filter Toolbars */
+  .tt-filter-toolbar {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tt-filter-search-box {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .tt-category-pills-bar {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tt-category-filter-btn {
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    padding: 0.4rem 0.85rem;
+  }
+
+  /* Map Container */
+  .tt-map-container,
+  #tt-leaflet-map,
+  #tt-global-map {
+    height: 380px !important;
+  }
+
+  /* Metric Card & Charts */
+  .tt-chart-card {
+    padding: 1rem;
+  }
+
+  .tt-chart-viewport {
+    height: 280px !important;
+  }
+
+  .tt-method-block {
+    padding: 1.35rem 1rem;
+  }
+
+  .tt-formula-card {
+    padding: 0.85rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Ultra-Compact Mobile Screens (<= 380px, e.g. iPhone SE, Flip screens)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 380px) {
+  .tt-brand-title {
+    font-size: 1rem;
+  }
+
+  .tt-brand-subtitle {
+    display: none;
+  }
+
+  .tt-hero-title {
+    font-size: 1.65rem;
+  }
+
+  .tt-hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .tt-earth-visual-sphere {
+    height: 220px;
+  }
+
+  .tt-earth-modes-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tt-earth-mode-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tt-hero-stats-row {
     grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .tt-metadata-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tt-content-area {
+    padding: 1rem 0.65rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Touch-First Device Optimizations
+   -------------------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase tap target sizes to minimum 44x44px for accessibility */
+  .tt-btn,
+  .tt-nav-link,
+  .tt-category-filter-btn,
+  .tt-landing-mobile-link {
+    min-height: 44px;
+  }
+
+  /* Prevent sticky hover states on mobile touch */
+  .tt-card:hover,
+  .tt-demo-card:hover,
+  .tt-var-card-preview:hover,
+  .tt-problem-card:hover {
+    transform: none;
+  }
+
+  /* Smooth momentum scrolling */
+  .tt-landing-mobile-drawer,
+  .tt-sidebar-nav,
+  .tt-modal-body,
+  .tt-table-responsive {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Reduced Motion Accessibility Mode
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tt-pulse-dot,
+  .tt-sat-ping,
+  .tt-hero-glow-orb {
+    animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Clean Print Media (Reports & Investigation Export)
+   -------------------------------------------------------------------------- */
+@media print {
+  .tt-landing-nav,
+  .tt-sidebar,
+  .tt-topbar,
+  .tt-hero-visual,
+  .tt-landing-mobile-drawer,
+  .tt-landing-drawer-backdrop,
+  .tt-btn,
+  .tt-footer {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .tt-main-wrapper,
+  .tt-content-area {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .tt-card,
+  .tt-method-block,
+  .tt-formula-card {
+    border: 1px solid #CCCCCC !important;
+    background: #FFFFFF !important;
+    box-shadow: none !important;
+    color: #000000 !important;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, p, span, strong {
+    color: #000000 !important;
   }
 }

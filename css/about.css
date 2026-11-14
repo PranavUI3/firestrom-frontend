@@ -1,0 +1,314 @@
+/* ==========================================================================
+   TerraTrend – Earth Systems Trend Detective
+   about.css - Scientific Methodology, Mathematical Formulas & NASA Missions
+   ========================================================================== */
+
+/* Main Layout Grid */
+.tt-about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Methodology Narrative Blocks */
+.tt-method-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  scroll-margin-top: calc(var(--topbar-height) + 2rem);
+}
+
+.tt-method-block:hover {
+  border-color: rgba(56, 189, 248, 0.25);
+  box-shadow: var(--shadow-md);
+}
+
+.tt-method-block h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.85rem;
+}
+
+.tt-method-block h3 i {
+  color: var(--accent-primary);
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.tt-method-block h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.tt-method-block p {
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1.15rem;
+}
+
+.tt-method-block strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Bullet & Ordered Lists */
+.tt-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tt-bullet-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.tt-bullet-list li i {
+  color: var(--accent-primary);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Formula & Math Callout Cards */
+.tt-formula-card {
+  background: rgba(8, 13, 24, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--accent-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  overflow-x: auto;
+}
+
+.tt-formula-card code {
+  font-family: var(--font-mono);
+  color: #38BDF8;
+  font-weight: 600;
+}
+
+.tt-formula-card span.tt-formula-desc {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Sticky Table of Contents Navigation */
+.tt-toc-sticky {
+  position: sticky;
+  top: calc(var(--topbar-height) + 1.5rem);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  max-height: calc(100vh - var(--topbar-height) - 3rem);
+  overflow-y: auto;
+}
+
+.tt-toc-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tt-toc-title i {
+  color: var(--accent-primary);
+  width: 16px;
+  height: 16px;
+}
+
+.tt-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.tt-toc-list a {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+
+.tt-toc-list a i {
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.tt-toc-list a:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.tt-toc-list a:hover i {
+  color: var(--accent-primary);
+}
+
+.tt-toc-list a.active {
+  color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.12);
+  font-weight: 600;
+}
+
+.tt-toc-list a.active i {
+  color: var(--accent-primary);
+}
+
+/* NASA Mission Specification Cards */
+.tt-mission-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.tt-mission-card {
+  background: rgba(8, 13, 24, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: all var(--transition-fast);
+}
+
+.tt-mission-card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  transform: translateY(-2px);
+}
+
+.tt-mission-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.tt-mission-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tt-mission-desc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.tt-mission-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
+}
+
+/* Stat & Reference Callouts */
+.tt-callout-box {
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.tt-callout-box.warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.tt-callout-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tt-callout-box.warning .tt-callout-title {
+  color: var(--color-warning);
+}
+
+.tt-callout-body {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Responsive Overrides for About Page */
+@media screen and (max-width: 1024px) {
+  .tt-about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .tt-toc-sticky {
+    position: static;
+    max-height: none;
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .tt-method-block {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .tt-method-block h3 {
+    font-size: 1.2rem;
+  }
+
+  .tt-formula-card {
+    padding: 1rem;
+    font-size: 0.82rem;
+  }
+}
