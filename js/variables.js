@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     container.querySelectorAll('.tt-details-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-var-id');
-        const vObj = TerraMockData.variables.find(item => item.id === id);
+        const vObj = list.find(item => item.id === id) || TerraMockData.variables.find(item => item.id === id);
         if (vObj) {
           TerraComponents.openVariableModal(vObj);
         }

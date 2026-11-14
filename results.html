@@ -36,6 +36,14 @@
             </div>
 
             <div class="tt-results-actions">
+              <button class="tt-btn tt-btn-outline tt-btn-sm" id="tt-save-investigation-btn" title="Save & Bookmark Investigation">
+                <i data-lucide="bookmark"></i>
+                <span>Save Report</span>
+              </button>
+              <button class="tt-btn tt-btn-outline tt-btn-sm" id="tt-audit-report-btn" title="Scientific Audit Provenance Report">
+                <i data-lucide="file-text"></i>
+                <span>Audit Report</span>
+              </button>
               <button class="tt-btn tt-btn-outline tt-btn-sm" id="tt-copy-link-btn" title="Copy shareable link">
                 <i data-lucide="share-2"></i>
                 <span>Share</span>
@@ -84,6 +92,15 @@
                 </h3>
                 <p class="tt-card-subtitle">Continuous multi-year temporal curve fitted with ordinary least squares and 95% confidence bands.</p>
               </div>
+              <!-- View Mode Toggles (User Feature 3) -->
+              <div class="tt-view-modes-group">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">View:</span>
+                <button type="button" class="tt-view-mode-btn active" data-mode="observed">Observed Raw</button>
+                <button type="button" class="tt-view-mode-btn" data-mode="anomalies">Deseasonalized Anomalies</button>
+                <button type="button" class="tt-view-mode-btn" data-mode="moving12">12M Moving Avg</button>
+                <button type="button" class="tt-view-mode-btn" data-mode="moving5y">5Y Smoothing</button>
+              </div>
+
               <!-- Custom Legends Indicator Bar -->
               <div class="tt-chart-legends-bar">
                 <div class="tt-chart-legend-item">
@@ -154,6 +171,33 @@
               <span class="tt-scorecard-label">Instrument Calibration</span>
               <div class="tt-scorecard-val">NASA Cal/Val</div>
               <span class="tt-scorecard-sub">Validated against surface networks</span>
+            </div>
+          </section>
+
+          <!-- Extreme Climate Anomalies Alert Section (Full-Stack Feature 4 / User Feature 4) -->
+          <section class="tt-card" id="tt-extreme-anomalies-section" style="display: none; margin-top: 1.5rem; margin-bottom: 1.5rem;">
+            <div class="tt-card-header">
+              <div>
+                <h3 class="tt-card-title">
+                  <i data-lucide="alert-triangle" style="color: var(--color-warning);"></i>
+                  <span>Extreme Multi-Decadal Climate Anomalies Detected</span>
+                </h3>
+                <p class="tt-card-subtitle">Statistically significant extreme departures exceeding empirical baseline standard deviation threshold (&ge; 2.0&sigma;).</p>
+              </div>
+              <span class="tt-badge badge-warning" id="tt-anomalies-count-badge">0 Events Detected</span>
+            </div>
+            <div class="tt-anomaly-table-wrap">
+              <table class="tt-anomaly-table">
+                <thead>
+                  <tr>
+                    <th>Observation Date</th>
+                    <th>Anomaly Departure</th>
+                    <th>Severity (&sigma;)</th>
+                    <th>Classification</th>
+                  </tr>
+                </thead>
+                <tbody id="tt-anomalies-tbody"></tbody>
+              </table>
             </div>
           </section>
 

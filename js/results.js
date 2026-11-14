@@ -39,6 +39,154 @@ document.addEventListener('DOMContentLoaded', async function () {
   renderMetadata(currentAnalysis);
   setupExportActions(currentAnalysis);
 
+  // Render extreme anomalies if detected
+  renderExtremeAnomalies(currentAnalysis);
+  setupInteractiveViewToggles(currentAnalysis);
+  setupSaveAndAuditButtons(currentAnalysis);
+
+  /**
+   * User Feature 3: Interactive View Toggles (Raw vs Anomalies vs 12m vs 5y)
+   */
+  function setupInteractiveViewToggles(analysis) {
+    const toggleBtns = document.querySelectorAll('.tt-view-mode-btn');
+    if (!toggleBtns.length || !resultsChartInstance) return;
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        toggleBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mode = btn.getAttribute('data-mode');
+        const ts = analysis.timeSeries;
+        const meta = analysis.metadata;
+
+        if (mode === 'anomalies') {
+          resultsChartInstance.data.datasets[0].label = `Deseasonalized Anomaly (${meta.unit})`;
+          resultsChartInstance.data.datasets[0].data = ts.anomalies || ts.observations;
+          resultsChartInstance.data.datasets[0].borderColor = '#A855F7';
+          resultsChartInstance.data.datasets[1].data = ts.fittedValues;
+        } else if (mode === 'moving12') {
+          resultsChartInstance.data.datasets[0].label = `12-Month Moving Average (${meta.unit})`;
+          resultsChartInstance.data.datasets[0].data = ts.movingAvg12m || ts.observations;
+          resultsChartInstance.data.datasets[0].borderColor = '#22D3EE';
+        } else if (mode === 'moving5y') {
+          resultsChartInstance.data.datasets[0].label = `5-Year Long-Term Smoothing (${meta.unit})`;
+          resultsChartInstance.data.datasets[0].data = ts.movingAvg5y || ts.observations;
+          resultsChartInstance.data.datasets[0].borderColor = '#EC4899';
+        } else {
+          resultsChartInstance.data.datasets[0].label = `Observed ${meta.variableName} (${meta.unit})`;
+          resultsChartInstance.data.datasets[0].data = ts.observations;
+          resultsChartInstance.data.datasets[0].borderColor = '#38BDF8';
+        }
+        resultsChartInstance.update();
+      });
+    });
+  }
+
+  /**
+   * Render Extreme Anomalies Table
+   */
+  function renderExtremeAnomalies(analysis) {
+    const section = document.getElementById('tt-extreme-anomalies-section');
+    const badge = document.getElementById('tt-anomalies-count-badge');
+    const tbody = document.getElementById('tt-anomalies-tbody');
+    if (!section || !tbody) return;
+
+    const anomalies = analysis.anomalies || [];
+    if (anomalies.length > 0) {
+      section.style.display = 'block';
+      if (badge) badge.textContent = `${anomalies.length} Extreme Event${anomalies.length === 1 ? '' : 's'}`;
+      tbody.innerHTML = anomalies.slice(0, 10).map(a => `
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-weight: 600;">${a.date}</td>
+          <td style="padding: 0.6rem 0.75rem; color: ${a.magnitude >= 0 ? 'var(--color-danger)' : 'var(--accent-primary)'}; font-family: var(--font-mono); font-weight: 700;">
+            ${a.magnitude >= 0 ? '+' : ''}${a.magnitude} ${a.unit || ''}
+          </td>
+          <td style="padding: 0.6rem 0.75rem;"><span class="tt-badge badge-warning">${a.sigma} &sigma;</span></td>
+          <td style="padding: 0.6rem 0.75rem; color: var(--text-secondary);">${a.type}</td>
+        </tr>
+      `).join('');
+    } else {
+      section.style.display = 'block';
+    }
+  }
+
+  /**
+   * User Feature 4: Save Investigation & View Audit Report Handlers
+   */
+  function setupSaveAndAuditButtons(analysis) {
+    const saveBtn = document.getElementById('tt-save-investigation-btn');
+    const auditBtn = document.getElementById('tt-audit-report-btn');
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const ok = TerraAPI.saveInvestigation(analysis);
+        if (ok) {
+          TerraUtils.showToast('Investigation saved to your Bookmarks!', 'success');
+          saveBtn.classList.add('tt-btn-success');
+          saveBtn.innerHTML = `<i data-lucide="check"></i> <span>Saved</span>`;
+          if (window.lucide) window.lucide.createIcons();
+        } else {
+          TerraUtils.showToast('Could not save investigation.', 'warning');
+        }
+      });
+    }
+
+    if (auditBtn) {
+      auditBtn.addEventListener('click', async () => {
+        TerraUtils.showToast('Generating scientific audit report...', 'info');
+        const res = await TerraAPI.getAuditReport(analysis.metadata);
+        if (res && res.markdown) {
+          openAuditModal(res.markdown, analysis);
+        } else {
+          openAuditModal(`### Scientific Audit Summary\n- Variable: ${analysis.metadata.variableName}\n- Rate: ${analysis.statistics.decadalRate} / decade\n- Mann-Kendall p = ${analysis.statistics.pValue}\n- Significant: ${analysis.statistics.significanceStatus}`, analysis);
+        }
+      });
+    }
+  }
+
+  function openAuditModal(markdown, analysis) {
+    const modalHTML = `
+      <div class="tt-modal-overlay" id="tt-audit-modal-overlay">
+        <div class="tt-modal-card tt-modal-lg">
+          <div class="tt-modal-header">
+            <div class="tt-modal-title-wrap">
+              <i data-lucide="award" class="tt-modal-header-icon"></i>
+              <h3>Scientific Audit & Provenance Verification</h3>
+            </div>
+            <button class="tt-modal-close" id="tt-audit-modal-close">&times;</button>
+          </div>
+          <div class="tt-modal-body" style="max-height: 60vh; overflow-y: auto;">
+            <pre style="white-space: pre-wrap; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6; background: var(--bg-primary); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); color: var(--text-primary);">${markdown}</pre>
+          </div>
+          <div class="tt-modal-footer">
+            <button class="tt-btn tt-btn-outline" id="tt-audit-copy-btn">Copy Markdown</button>
+            <button class="tt-btn tt-btn-primary" id="tt-audit-close-btn">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+    const existing = document.getElementById('tt-audit-modal-overlay');
+    if (existing) existing.remove();
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    if (window.lucide) window.lucide.createIcons();
+
+    const overlay = document.getElementById('tt-audit-modal-overlay');
+    const closeBtn = document.getElementById('tt-audit-modal-close');
+    const closeBtn2 = document.getElementById('tt-audit-close-btn');
+    const copyBtn = document.getElementById('tt-audit-copy-btn');
+
+    const close = () => overlay.remove();
+    closeBtn.addEventListener('click', close);
+    closeBtn2.addEventListener('click', close);
+    copyBtn.addEventListener('click', () => {
+      TerraUtils.copyToClipboard(markdown);
+      TerraUtils.showToast('Audit report copied to clipboard!', 'success');
+    });
+  }
+
+
   if (window.lucide) window.lucide.createIcons();
 
   /**

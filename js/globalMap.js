@@ -76,7 +76,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     allPoints.forEach(pt => {
       // Create stylized circular SVG pulse marker
-      const marker = L.circleMarker(pt.coords, {
+      const coords = pt.coords || (pt.lat !== undefined && pt.lon !== undefined ? [pt.lat, pt.lon] : [20, 10]);
+      const color = pt.color || '#38BDF8';
+      const regionName = pt.region || pt.name || 'Study Area';
+      const statusLabel = pt.statusLabel || (pt.status || 'Active Trend Site');
+      const marker = L.circleMarker(coords, {
         radius: 8,
         fillColor: pt.color,
         color: '#FFFFFF',
@@ -88,9 +92,9 @@ document.addEventListener('DOMContentLoaded', async function () {
       const popupContent = `
         <div class="tt-map-popup-card">
           <div class="tt-popup-header">
-            <span class="tt-popup-region">${pt.region}</span>
+            <span class="tt-popup-region">${pt.region || pt.name || 'Study Area'}</span>
             <span class="tt-badge ${pt.significance === 'statistically_significant' ? 'badge-danger' : (pt.significance === 'not_significant' ? 'badge-success' : 'badge-neutral')}">
-              ${pt.statusLabel.split('(')[0].trim()}
+              ${(pt.statusLabel || pt.status || 'Active Site').split('(')[0].trim()}
             </span>
           </div>
 
@@ -113,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
           <p style="font-size: 0.75rem; color: #94A3B8; margin-bottom: 0.75rem;">${pt.detail}</p>
 
-          <a href="detective.html?variable=${pt.variable}&regionName=${encodeURIComponent(pt.region)}&lat=${pt.coords[0]}&lon=${pt.coords[1]}" class="tt-btn tt-btn-primary tt-btn-sm tt-popup-cta">
+          <a href="detective.html?variable=${pt.variable}&regionName=${encodeURIComponent(pt.region)}&lat=${(pt.coords ? pt.coords[0] : pt.lat) || 0}&lon=${(pt.coords ? pt.coords[1] : pt.lon) || 0}" class="tt-btn tt-btn-primary tt-btn-sm tt-popup-cta">
             <i data-lucide="search-check"></i>
             <span>Deep Dive in Detective</span>
           </a>
