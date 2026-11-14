@@ -613,3 +613,65 @@
     color: #000000 !important;
   }
 }
+
+/* Mobile drawer & backdrop for index.html */
+@media screen and (max-width: 768px) {
+  .tt-landing-mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(85vw, 320px);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    z-index: 110;
+    overflow-y: auto;
+  }
+
+  .tt-landing-mobile-drawer.open,
+  .tt-landing-mobile-drawer.mobile-open {
+    transform: translateX(0);
+  }
+
+  .tt-landing-drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 105;
+  }
+
+  .tt-landing-drawer-backdrop.visible,
+  .tt-landing-drawer-backdrop.open {
+    display: block;
+  }
+
+  .tt-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .tt-section {
+    padding: 3rem 0;
+  }
+
+  .tt-section-title {
+    font-size: 1.65rem;
+  }
+
+  .tt-demo-chart-box {
+    height: 180px;
+  }
+
+  .tt-cta-box {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .tt-cta-title {
+    font-size: 1.45rem;
+  }
+}
